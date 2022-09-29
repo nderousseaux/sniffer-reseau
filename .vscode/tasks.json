@@ -1,0 +1,29 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "clean",
+        "type": "shell",
+        "command": "docker-compose exec analyzer bash -c 'make clean'",
+        "presentation": {
+            "panel": "shared",
+            "showReuseMessage": false,
+            "reveal": "silent",
+          }
+      },
+      {
+        "label": "launch",
+        "type": "shell",
+        "command": "docker-compose exec analyzer bash -c 'make clean && make debug && gdbserver :8888 ./analyzer'",
+        "isBackground": true,
+        "presentation": {
+          "panel": "shared",
+          "showReuseMessage": false,
+          "reveal": "always",
+          "focus": true,
+        }
+      }
+    ]
+  }
