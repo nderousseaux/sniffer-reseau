@@ -16,7 +16,7 @@
       {
         "label": "launch",
         "type": "shell",
-        "command": "docker-compose exec analyzer bash -c 'make clean && make debug && gdbserver :8888 ./analyzer'",
+        "command": "docker-compose exec analyzer bash -c 'make clean && make debug && gdbserver :8888 ./analyzer -o file -f filter -v 2'",
         "isBackground": true,
         "presentation": {
           "panel": "shared",

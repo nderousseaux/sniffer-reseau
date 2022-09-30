@@ -22,7 +22,8 @@ RUN apt-get update &&\
         locales \
         locales-all\
         gdbserver \
-        libpcap-dev && \
+        libpcap-dev \
+        iputils-ping && \
     apt-get clean
 
 WORKDIR /code

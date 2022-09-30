@@ -1,10 +1,37 @@
-#include <stdio.h>
+#include <pcap.h>
+#include <signal.h>
 #include <stdlib.h>
 
-#include "includes/devices.h"
+#include "includes/args.h"
+#include "includes/sniffer.h"
 
-int main(void)
+pcap_t *handler = NULL;
+
+/* Termine proprement le handler */
+void end_analyze()
 {
-    find_device();
+    printf("Bye !\n");
+    pcap_close(handler);
+    exit(0);
+}
+
+int main(int argc, char *argv[])
+{
+    //On récupère les arguments
+    struct args args = parse_args(argc, argv);
+
+    //On initilise pcap
+    handler = init_handler(args);
+
+    //On déclare le handler (pour le CTRL+C)
+    signal(SIGINT, end_analyze);
+
+    //On lance la capture
+    int count = 0;
+    if(pcap_loop(handler, count, (pcap_handler)compute_paquet, (u_char*)&args) == PCAP_ERROR){
+        fprintf(stderr, "Erreur lors de la capture: %s\n", pcap_geterr(handler));
+        return EXIT_FAILURE;
+    }
+      
     return EXIT_SUCCESS;
 }
