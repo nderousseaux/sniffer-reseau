@@ -45,7 +45,7 @@ void print_ethernet(const struct ether_header *eth, int verbose_level)
     switch (verbose_level)
     {
         case 1:
-            printf("%s ", ether_type);
+            printf("%s", ether_type);
             break;
         case 2:
             printf("Ethernet: %s %s > %s\n",
@@ -90,7 +90,7 @@ void print_ipv4(const struct ip *iph, int verbose_level){
     switch (verbose_level)
     {
         case 1:
-            printf("%s > %s %s",
+            printf(" %s > %s %s",
                 inet_ntoa(iph->ip_src),
                 inet_ntoa(iph->ip_dst),
                 ip_type    
@@ -117,6 +117,37 @@ void print_ipv4(const struct ip *iph, int verbose_level){
             printf(" | ├ Source: %s\n", inet_ntoa(iph->ip_src));
             printf(" | ├ Destination: %s\n", inet_ntoa(iph->ip_dst));
             
+            break;
+        default:
+            break;
+    }
+}
+
+/* Affiche l'entête udp */
+void print_udp(const struct udphdr *udph, int verbose_level){
+
+    //On affiche l'entête
+    switch (verbose_level)
+    {
+        case 1:
+            printf(" %d > %d",
+                ntohs(udph->uh_sport),
+                ntohs(udph->uh_dport)
+            );
+            break;
+        case 2:
+            printf("UDP: Port %d to port %d\n",
+                ntohs(udph->uh_sport),
+                ntohs(udph->uh_dport)
+            );
+            break;
+        case 3:
+            printf(" ├ Trame UDP\n");
+            printf(" | ├ Port source: %d\n", ntohs(udph->uh_sport));
+            printf(" | ├ Port destination: %d\n", ntohs(udph->uh_dport));
+            printf(" | ├ Longueur: %d\n", ntohs(udph->uh_ulen));
+            printf(" | ├ Somme de contrôle: %d\n", ntohs(udph->uh_sum));
+            printf(" | ├ Données: %s\n", (char *)udph + sizeof(struct udphdr));
             break;
         default:
             break;

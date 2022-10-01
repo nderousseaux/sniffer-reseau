@@ -31,4 +31,16 @@ void compute_tcp(const u_char **pck, int verbose_level);
 /* Traite un paquet udp */
 void compute_udp(const u_char **pck, int verbose_level);
 
+/* Traite un paquet dns */
+void compute_dns(const u_char **pck, int verbose_level);
+
+/* Traite un paquet bootp */
+void compute_bootp(const u_char **pck, int verbose_level);
+
+/* Traite un paquet http */
+void compute_http(const u_char **pck, int verbose_level);
+
+/* Traite un paquet https */
+void compute_https(const u_char **pck, int verbose_level);
+
 #endif

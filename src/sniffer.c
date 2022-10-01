@@ -57,7 +57,7 @@ void compute_ethernet(const u_char **pck, int verbose_level)
             compute_arp(pck, verbose_level);
             break;
         default:
-            fprintf(stderr, "Protocole de couche réseau inconnu: %d\n", ntohs(eth->ether_type));
+            printf("Protocole de couche réseau inconnu: %d\n", ntohs(eth->ether_type));
             break;
     }
 }
@@ -86,7 +86,7 @@ void compute_ipv4(const u_char **pck, int verbose_level)
             compute_icmp(pck, verbose_level);
             break;
         default:
-            fprintf(stderr, "Protocole de couche transport inconnu: %d", iph->ip_p);
+            printf("Protocole de couche transport inconnu: %d", iph->ip_p);
             break;
     }
 }
@@ -96,7 +96,7 @@ void compute_ipv6(const u_char **pck, int verbose_level)
 {
     (void) pck;
     (void) verbose_level; 
-    fprintf(stderr, " | Protocole ipv6 non supporté\n");
+    printf(" | Protocole ipv6 non supporté\n");
     //TODO
 }
 
@@ -105,7 +105,7 @@ void compute_arp(const u_char **pck, int verbose_level)
 {
     (void) pck;
     (void) verbose_level; 
-    fprintf(stderr, " | Protocole arp non supporté\n");
+    printf(" | Protocole arp non supporté\n");
     //TODO
 }
 
@@ -114,7 +114,7 @@ void compute_icmp(const u_char **pck, int verbose_level)
 {
     (void) pck;
     (void) verbose_level; 
-    fprintf(stderr, " | Protocole icmp non supporté\n");
+    printf(" | Protocole icmp non supporté\n");
     //TODO
 }
 
@@ -123,15 +123,78 @@ void compute_tcp(const u_char **pck, int verbose_level)
 {
     (void) pck;
     (void) verbose_level; 
-    fprintf(stderr, " | Protocole tcp non supporté\n");
+    printf(" | Protocole tcp non supporté\n");
     //TODO
 }
 
 /* Traite un paquet udp */
 void compute_udp(const u_char **pck, int verbose_level)
 {
+    struct udphdr *udph = (struct udphdr *) *pck;
+
+    //On affiche la couche transport
+    print_udp(udph, verbose_level);
+
+    //On saute l'entête udp
+    *pck += 8;
+
+    //On teste le protocole de la couche application
+    switch (ntohs(udph->uh_dport))
+    {
+        case 53:
+            compute_dns(pck, verbose_level);
+            break;
+        case 67:
+            compute_bootp(pck, verbose_level);
+            break;
+        case 68:
+            compute_bootp(pck, verbose_level);
+            break;
+        case 80:
+            compute_http(pck, verbose_level);
+            break;
+        case 443:
+            compute_https(pck, verbose_level);
+            break;
+        default:
+            printf("Protocole de couche application inconnu: %d", ntohs(udph->uh_dport));
+            break;
+    }
+}
+
+/* Traite un paquet dns */
+void compute_dns(const u_char **pck, int verbose_level)
+{
     (void) pck;
     (void) verbose_level; 
-    fprintf(stderr, " | Protocole udp non supporté\n");
+    printf(" | Protocole dns non supporté\n");
     //TODO
 }
+
+/* Traite un paquet bootp */
+void compute_bootp(const u_char **pck, int verbose_level)
+{
+    (void) pck;
+    (void) verbose_level; 
+    printf(" | Protocole bootp non supporté\n");
+    //TODO
+}
+
+/* Traite un paquet http */
+void compute_http(const u_char **pck, int verbose_level)
+{
+    (void) pck;
+    (void) verbose_level; 
+    printf(" | Protocole http non supporté\n");
+    //TODO
+}
+
+/* Traite un paquet https */
+void compute_https(const u_char **pck, int verbose_level)
+{
+    (void) pck;
+    (void) verbose_level; 
+    printf(" | Protocole https non supporté\n");
+    //TODO
+}
+
