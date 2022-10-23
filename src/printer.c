@@ -142,6 +142,91 @@ void print_ipv4(const struct ip *iph, int verbose_level){
     }
 }
 
+/* Affiche l'entête arp */
+void print_arp(const struct ether_arp *arp, int verbose_level){
+    char arp_type[10];
+    char hardware_type[10];
+    char protocol_type[10];
+    
+    //On enregistre le nom du protocole
+    switch(ntohs(arp->arp_op))
+    {
+        case ARPOP_REQUEST:
+            strcpy(arp_type, "Requête");
+            break;
+        case ARPOP_REPLY:
+            strcpy(arp_type, "Réponse");
+            break;
+        default:
+            strcpy(arp_type, "???");
+            break;
+    }
+
+    //On enregistre le nom du hardware
+    switch(ntohs(arp->arp_hrd))
+    {
+        case ARPHRD_ETHER:
+            strcpy(hardware_type, "Ethernet");
+            break;
+        default:
+            strcpy(hardware_type, "???");
+            break;
+    }
+
+    //On enregistre le nom du protocole
+    switch(ntohs(arp->arp_pro))
+    {
+        case ETHERTYPE_IP:
+            strcpy(protocol_type, "IPv4");
+            break;
+        case ETHERTYPE_IPV6:
+            strcpy(protocol_type, "IPv6");
+            break;
+        default:
+            strcpy(protocol_type, "???");
+            break;
+    }
+
+    //On affiche l'entête
+    switch (verbose_level)
+    {
+        case 1:
+            printf(" %s ", inet_ntoa(*(struct in_addr *)arp->arp_spa));
+            if(ntohs(arp->arp_op) == ARPOP_REQUEST)
+                printf("> %s",inet_ntoa(*(struct in_addr *)arp->arp_tpa));
+            else
+                printf(": %s",ether_ntoa((const struct ether_addr *)&arp->arp_tha));
+            break;
+        case 2:
+            printf("ARP: %s ", inet_ntoa(*(struct in_addr *)arp->arp_spa));
+            //Si le type est une requête
+            if(ntohs(arp->arp_op) == ARPOP_REQUEST)
+                printf("demande qui est %s\n", inet_ntoa(*(struct in_addr *)arp->arp_tpa));
+            else
+                printf("est %s\n",ether_ntoa((const struct ether_addr *)arp->arp_sha));
+            break;
+        case 3:
+            printf(" ├ Trame ARP %s ", inet_ntoa(*(struct in_addr *)arp->arp_spa));
+            if(ntohs(arp->arp_op) == ARPOP_REQUEST)
+                printf("demande qui est %s\n", inet_ntoa(*(struct in_addr *)arp->arp_tpa));
+            else
+                printf("est %s\n",ether_ntoa((const struct ether_addr *)arp->arp_sha));
+            printf(" | ├ Type de hardware: %s\n", hardware_type);
+            printf(" | ├ Type du protocole: %s\n", protocol_type);
+            printf(" | ├ Taille de l'addresse hardware: %d\n", arp->arp_hln);
+            printf(" | ├ Taille de l'addresse protocole: %d\n", arp->arp_pln);
+            printf(" | ├ Opéaration: %s\n", arp_type);
+            printf(" | ├ MAC source: %s\n", ether_ntoa((const struct ether_addr *)&arp->arp_sha));
+            printf(" | ├ IP source: %s\n", inet_ntoa(*(struct in_addr *)arp->arp_spa));
+            printf(" | ├ MAC destination: %s\n", ether_ntoa((const struct ether_addr *)&arp->arp_tha));
+            printf(" | ├ IP destination: %s\n", inet_ntoa(*(struct in_addr *)arp->arp_tpa));
+
+            break;
+        default:
+            break;
+    }
+}
+
 /* Affiche l'entête udp */
 void print_udp(const struct udphdr *udph, int verbose_level){
 

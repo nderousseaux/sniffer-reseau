@@ -25,6 +25,9 @@ void print_ethernet(const struct ether_header *eth, int verbose_level);
 /* Affiche l'entête ipv4 */
 void print_ipv4(const struct ip *iph, int verbose_level);
 
+/* Affiche l'entête arp */
+void print_arp(const struct ether_arp *arp, int verbose_level);
+
 /* Affiche l'entête udp */
 void print_udp(const struct udphdr *udph, int verbose_level);
 

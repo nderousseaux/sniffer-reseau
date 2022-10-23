@@ -29,7 +29,7 @@ void compute_paquet(struct args *args, const struct pcap_pkthdr *meta, const u_c
 
     //On traite le paquet
     compute_ethernet(&pck, args->verbose);
-    
+
     printf("\n");
 }
 
@@ -105,10 +105,10 @@ void compute_ipv6(const u_char **pck, int verbose_level)
 /* Traite un paquet arp */
 void compute_arp(const u_char **pck, int verbose_level)
 {
-    (void) pck;
-    (void) verbose_level; 
-    printf(" | Protocole arp non supporté\n");
-    //TODO
+    struct ether_arp *arp = (struct ether_arp *) *pck;
+
+    //On affiche la couche réseau
+    print_arp(arp, verbose_level);
 }
 
 /* Traite un paquet icmp */
