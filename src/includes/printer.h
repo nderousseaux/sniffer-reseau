@@ -10,6 +10,8 @@
 #include <string.h>
 #include <time.h>
 
+#include "protocols.h"
+
 /* Affiche l'heure */
 void print_time(const struct pcap_pkthdr *meta, int verbose_level);
 
@@ -21,5 +23,8 @@ void print_ipv4(const struct ip *iph, int verbose_level);
 
 /* Affiche l'entête udp */
 void print_udp(const struct udphdr *udph, int verbose_level);
+
+/* Affiche l'entête bootp */
+void print_bootp(const struct bootp *bootph, int verbose_level);
 
 #endif

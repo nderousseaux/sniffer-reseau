@@ -1,0 +1,9 @@
+FROM ubuntu:18.04
+
+RUN apt-get update && \
+    apt-get install -y \
+        isc-dhcp-server
+
+# Copy the configuration file
+COPY ./docker/dhcpd.conf /etc/dhcp/dhcpd.conf
+COPY ./docker/isc-dhcp-server /etc/default/isc-dhcp-server

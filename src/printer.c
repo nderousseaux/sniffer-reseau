@@ -116,7 +116,6 @@ void print_ipv4(const struct ip *iph, int verbose_level){
             printf(" | ├ Somme de contrôle: %d\n", ntohs(iph->ip_sum));
             printf(" | ├ Source: %s\n", inet_ntoa(iph->ip_src));
             printf(" | ├ Destination: %s\n", inet_ntoa(iph->ip_dst));
-            
             break;
         default:
             break;
@@ -147,9 +146,46 @@ void print_udp(const struct udphdr *udph, int verbose_level){
             printf(" | ├ Port destination: %d\n", ntohs(udph->uh_dport));
             printf(" | ├ Longueur: %d\n", ntohs(udph->uh_ulen));
             printf(" | ├ Somme de contrôle: %d\n", ntohs(udph->uh_sum));
-            printf(" | ├ Données: %s\n", (char *)udph + sizeof(struct udphdr));
             break;
         default:
             break;
     }
+}
+
+/* Affiche l'entête bootp */
+void print_bootp(const struct bootp *bootph, int verbose_level)
+{
+    //On affiche l'entête
+    switch (verbose_level)
+    {
+        case 1:
+            printf(" BOOTP");
+            break;
+        case 2:
+            printf("BOOTP: Client %s - Server %s\n",
+                inet_ntoa(bootph->bp_ciaddr),
+                inet_ntoa(bootph->bp_siaddr)
+            );
+            break;
+        case 3:
+            printf(" ├ Trame BOOTP\n");
+            printf(" | ├ Code opérationnel: %d\n", bootph->bp_op);
+            printf(" | ├ Type de hardware: %d\n", bootph->bp_htype);
+            printf(" | ├ Taille de l'adresse hardware: %d\n", bootph->bp_hlen);
+            printf(" | ├ Nombre de sauts: %d\n", bootph->bp_hops);
+            printf(" | ├ Identifiant de transaction: %d\n", ntohl(bootph->bp_xid));
+            printf(" | ├ Temps écoulé: %d\n", ntohs(bootph->bp_secs));
+            printf(" | ├ Flags: %d\n", ntohs(bootph->bp_flags));
+            printf(" | ├ Adresse IP client: %s\n", inet_ntoa(bootph->bp_ciaddr));
+            printf(" | ├ Adresse IP Allouée: %s\n", inet_ntoa(bootph->bp_yiaddr));
+            printf(" | ├ Adresse IP serveur: %s\n", inet_ntoa(bootph->bp_siaddr));
+            printf(" | ├ Adresse IP Gateway: %s\n", inet_ntoa(bootph->bp_giaddr));
+            printf(" | ├ Adresse hardware client: %s\n", ether_ntoa((const struct ether_addr *)&bootph->bp_chaddr));
+            printf(" | ├ Nom du serveur: %s\n", bootph->bp_sname);
+            printf(" | ├ Nom du fichier de boot: %s\n", bootph->bp_file);
+            break;
+        default:
+            break;            
+    }
+    
 }

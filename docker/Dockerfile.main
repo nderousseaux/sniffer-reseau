@@ -23,7 +23,7 @@ RUN apt-get update &&\
         locales-all\
         gdbserver \
         libpcap-dev \
-        iputils-ping && \
-    apt-get clean
+        iputils-ping \
+        isc-dhcp-client
 
 WORKDIR /code

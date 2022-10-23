@@ -2,3 +2,4 @@
 
 analyzer
 *.todo
+.DS_Store

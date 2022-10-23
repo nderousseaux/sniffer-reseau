@@ -2,10 +2,43 @@ version: "3"
 services:
   analyzer:
     container_name: analyzer
-    build: ./docker
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.main
     tty: true
     stdin_open: true
     volumes:
       - "./:/code"
     ports:
-      - "8888:8888"
+      - "8888:8888" #Debug
+    networks:
+      analyzer-network:
+        ipv4_address: 172.27.0.2
+    cap_add:
+      - NET_ADMIN
+
+  dhcp:
+    container_name: dhcpd
+    build: 
+      context: .
+      dockerfile: ./docker/Dockerfile.dhcp
+    tty: true
+    stdin_open: true
+    volumes:
+      - "./docker/dhcpd.conf:/etc/dhcp/dhcpd.conf"
+      - "./docker/isc-dhcp-server:/etc/default/isc-dhcp-server"
+    networks:
+      analyzer-network:
+        ipv4_address: 172.27.0.3
+    cap_add:
+      - NET_ADMIN
+    command: /bin/bash -c "/etc/init.d/isc-dhcp-server restart && /bin/bash"
+
+networks:
+  analyzer-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.0.0/16
+          gateway: 172.27.0.1

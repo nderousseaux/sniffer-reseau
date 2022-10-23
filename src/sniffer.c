@@ -58,6 +58,7 @@ void compute_ethernet(const u_char **pck, int verbose_level)
             break;
         default:
             printf("Protocole de couche réseau inconnu: %d\n", ntohs(eth->ether_type));
+            printf("Texte brut: %s", *pck);
             break;
     }
 }
@@ -86,7 +87,8 @@ void compute_ipv4(const u_char **pck, int verbose_level)
             compute_icmp(pck, verbose_level);
             break;
         default:
-            printf("Protocole de couche transport inconnu: %d", iph->ip_p);
+            printf("Protocole de couche transport inconnu: %d\n", iph->ip_p);
+            printf("Texte brut: %s", *pck);
             break;
     }
 }
@@ -157,7 +159,8 @@ void compute_udp(const u_char **pck, int verbose_level)
             compute_https(pck, verbose_level);
             break;
         default:
-            printf("Protocole de couche application inconnu: %d", ntohs(udph->uh_dport));
+            printf("Protocole de couche application inconnu: %d\n", ntohs(udph->uh_dport));
+            printf("Texte brut: %s\n", *pck);
             break;
     }
 }
@@ -174,9 +177,15 @@ void compute_dns(const u_char **pck, int verbose_level)
 /* Traite un paquet bootp */
 void compute_bootp(const u_char **pck, int verbose_level)
 {
-    (void) pck;
-    (void) verbose_level; 
-    printf(" | Protocole bootp non supporté\n");
+    struct bootp *bootph = (struct bootp *) *pck;
+
+    //On affiche la couche application
+    print_bootp(bootph, verbose_level);
+
+    //On saute l'entête bootp
+    *pck += 236;
+
+    //On teste le protocole de la couche application
     //TODO
 }
 
