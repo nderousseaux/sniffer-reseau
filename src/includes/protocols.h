@@ -17,7 +17,15 @@ struct bootp {
     unsigned char bp_chaddr[16]; // Adresse hardware du client
     unsigned char bp_sname[64]; // Nom du serveur
     unsigned char bp_file[128]; // Nom du fichier boot
-    unsigned char bp_vend[64]; // Options
+};
+
+struct vendor_specific_t {
+    struct vendor_specific_option_t ** options; //Liste des options, le type correspond à l'index
+};
+
+struct vendor_specific_option_t {
+    unsigned char length;
+    unsigned char * value;
 };
 
 

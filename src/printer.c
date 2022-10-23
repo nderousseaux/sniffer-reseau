@@ -1,5 +1,25 @@
 #include "./includes/printer.h"
-   
+
+/* Retourne une chaine avec la version hexa d'une variable */   
+char * get_hex(void * var, int size)
+{
+    char * hex = malloc(size * 2 + 1 + 3);
+    char * hex_ptr = hex;
+    //On ajoute le préfixe 0x
+    *hex_ptr = '0';
+    hex_ptr++;
+    *hex_ptr = 'x';
+    hex_ptr++;
+    unsigned char * var_ptr = (unsigned char *) var;
+    for (int i = 0; i < size; i++)
+    {
+        sprintf(hex_ptr, "%02x", *var_ptr);
+        hex_ptr += 2;
+        var_ptr++;
+    }
+    return hex;
+}
+
 /* Affiche l'heure */
 void print_time(const struct pcap_pkthdr *meta, int verbose_level)
 {
@@ -188,4 +208,202 @@ void print_bootp(const struct bootp *bootph, int verbose_level)
             break;            
     }
     
+}
+
+/* Affiche la zone vendor specific de bootp */
+void print_vendor_specific(const struct vendor_specific_t *vendor_specific, int verbose_level)
+{
+
+    //On détecte si c'est du dhcp
+    if(vendor_specific->options[53] != 0){
+        print_dhcp(vendor_specific, verbose_level);
+        return;
+    }
+    switch (verbose_level)
+    {
+        case 2:
+            printf(" with VENDOR SPECIFIC");
+            break;
+        case 3:
+            printf(" ├ Zone VENDOR SPECIFIC\n");
+            for(int i = 0; i < 256; i++){
+                if(vendor_specific->options[i] != 0){
+                    printf(
+                        " | ├ Option %d: %s\n",
+                        i,
+                        get_hex(
+                            vendor_specific->options[i]->value,
+                            vendor_specific->options[i]->length
+                        )
+                    );
+                }
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+/* Affiche la zone dhcp */
+void print_dhcp(const struct vendor_specific_t *vendor_specific, int verbose_level)
+{
+    int message_type = vendor_specific->options[53]->value[0];
+    char * message_type_str = "Unknown";
+    char * ip = "";
+    switch (message_type){
+        case 1:
+            message_type_str = "DHCPDISCOVER";
+            break;
+        case 2:
+            message_type_str = "DHCPOFFER";
+            break;
+        case 3:
+            message_type_str = "DHCPREQUEST";
+            if(vendor_specific->options[50] != 0){
+                ip = inet_ntoa(*(struct in_addr *)vendor_specific->options[50]->value);
+            }
+            break;
+        case 4:
+            message_type_str = "DHCPDECLINE";
+            break;
+        case 5:
+            message_type_str = "DHCPACK";
+            if(vendor_specific->options[50] != 0){
+                ip = inet_ntoa(*(struct in_addr *)vendor_specific->options[50]->value);
+            }
+            break;
+        case 6:
+            message_type_str = "DHCPNAK";
+            break;
+        case 7:
+            message_type_str = "DHCPRELEASE";
+            break;
+        case 8:
+            message_type_str = "DHCPINFORM";
+            break;
+        default:
+            break;
+    }
+
+    //On affiche la zone dhcp
+    switch(verbose_level){
+        case 1:
+            if(!strcmp(ip, ""))
+                printf(" %s", message_type_str);
+            else
+                printf(" %s (%s)", message_type_str, ip);
+            break;
+        case 2:
+            if(!strcmp(ip, "")){
+                printf("DHCP: %s", message_type_str);
+            }else{
+                printf("DHCP: %s (%s)", message_type_str, ip);
+            }
+            break;
+        case 3:
+            printf(" ├ Zone DHCP\n");
+            //Et toutes les options interressantes
+            printf(
+                " | ├ Message type: %s (%d)\n",
+                message_type_str,
+                vendor_specific->options[53]->value[0]);
+
+            //Subnet mask
+            if(vendor_specific->options[1] != 0){
+                printf(
+                    " | ├ Subnet mask: %s\n",
+                    inet_ntoa(
+                        *((struct in_addr *)vendor_specific->options[1]->value)
+                    )
+                );
+            }
+
+            //Router
+            if(vendor_specific->options[3] != 0){
+                printf(
+                    " | ├ Router: %s\n",
+                    inet_ntoa(
+                        *((struct in_addr *)vendor_specific->options[3]->value)
+                    )
+                );
+            }
+
+            //DNS
+            if(vendor_specific->options[6] != 0){
+                printf(
+                    " | ├ DNS: %s\n",
+                    inet_ntoa(
+                        *((struct in_addr *)vendor_specific->options[6]->value)
+                    )
+                );
+            }
+
+            //Domain name
+            if(vendor_specific->options[15] != 0){
+                printf(
+                    " | ├ Domain name: %s\n",
+                    vendor_specific->options[15]->value
+                );
+            }
+
+            //Broadcast address
+            if(vendor_specific->options[28] != 0){
+                printf(
+                    " | ├ Broadcast address: %s\n",
+                    inet_ntoa(
+                        *((struct in_addr *)vendor_specific->options[28]->value)
+                    )
+                );
+            }
+
+            //Requested IP address
+            if(vendor_specific->options[50] != 0){
+                printf(
+                    " | ├ Requested IP address: %s\n",
+                    inet_ntoa(
+                        *((struct in_addr *)vendor_specific->options[50]->value)
+                    )
+                );
+            }
+
+            //Lease time
+            if(vendor_specific->options[51] != 0){
+                printf(
+                    " | ├ Lease time: %d\n",
+                    ntohl(*((uint32_t *)vendor_specific->options[51]->value))
+                );
+            }
+
+            //Server identifier
+            if(vendor_specific->options[54] != 0){
+                printf(
+                    " | ├ Server identifier: %s\n",
+                    inet_ntoa(
+                        *((struct in_addr *)vendor_specific->options[54]->value)
+                    )
+                );
+            }
+
+            //Parameter request list
+            if(vendor_specific->options[55] != 0){
+                printf(" | ├ Parameter request list: ");
+                for(int i = 0; i < vendor_specific->options[55]->length; i++){
+                    printf("%d ", vendor_specific->options[55]->value[i]);
+                }
+                printf("\n");
+            }
+
+            //Client identifier
+            if(vendor_specific->options[61] != 0){
+                printf(
+                    " | ├ Client identifier: %s\n",
+                    get_hex(
+                        vendor_specific->options[61]->value,
+                        vendor_specific->options[61]->length
+                    )
+                );
+            }
+
+            break;
+    }
 }

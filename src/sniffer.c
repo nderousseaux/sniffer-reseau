@@ -29,7 +29,7 @@ void compute_paquet(struct args *args, const struct pcap_pkthdr *meta, const u_c
 
     //On traite le paquet
     compute_ethernet(&pck, args->verbose);
-   
+    
     printf("\n");
 }
 
@@ -185,8 +185,37 @@ void compute_bootp(const u_char **pck, int verbose_level)
     //On saute l'entête bootp
     *pck += 236;
 
-    //On teste le protocole de la couche application
-    //TODO
+    //Si on détecte le magic cookie, on enregistre la zone vendor specific
+    if(**pck == 99 && *(*pck + 1) == 130 && *(*pck + 2) == 83 && *(*pck + 3) == 99)
+    {
+        *pck += 4;
+        compute_vendor_specific(pck, verbose_level);        
+    }
+}
+
+/* Traite la zone vendor specific de bootp (vaut pour le dhcp) */
+void compute_vendor_specific(const u_char **pck, int verbose_level)
+{
+    //Pour chaque option, on l'enregistre dans la strucutre
+    struct vendor_specific_t vs;
+    vs.options = malloc(sizeof(struct vendor_specific_option_t)*255);
+
+    (void) verbose_level;
+    (void) pck;
+    while(**pck != 0xff)
+    {
+        int option = **pck;
+        *pck += 1;
+        vs.options[option] = malloc(sizeof(struct vendor_specific_option_t));
+        vs.options[option]->length = **pck;
+        *pck += 1;
+        vs.options[option]->value = malloc(vs.options[option]->length);
+        memcpy(vs.options[option]->value, *pck, vs.options[option]->length);
+        *pck += vs.options[option]->length;
+    }
+
+    //On affiche la zone vendor specific
+    print_vendor_specific(&vs, verbose_level);
 }
 
 /* Traite un paquet http */

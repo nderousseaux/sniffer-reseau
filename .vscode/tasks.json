@@ -6,7 +6,7 @@
       {
         "label": "clean",
         "type": "shell",
-        "command": "docker-compose exec analyzer bash -c 'make clean'",
+        "command": "docker-compose exec analyzer bash -c 'pkill -2 gdbserver && make clean'",
         "presentation": {
             "panel": "shared",
             "showReuseMessage": false,
@@ -16,7 +16,7 @@
       {
         "label": "launch",
         "type": "shell",
-        "command": "docker-compose exec analyzer bash -c 'make clean && make debug && gdbserver :8888 ./analyzer -o file -f filter -v 2'",
+        "command": "docker-compose exec analyzer bash -c 'make clean && make debug && gdbserver :8888 ./analyzer -i eth0 -v 3'",
         "isBackground": true,
         "presentation": {
           "panel": "shared",

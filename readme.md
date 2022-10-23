@@ -18,7 +18,7 @@ make && ./analyzer [-i interface] [-o fichier] [-f filtre] [-v niveau]
 | |-IPV4                --> Implémenté 
 | |-UDP                 --> Implémenté
 | | |-BOOTP             --> Implémenté
-| | | |-DHCP
+| | | |-DHCP            --> Implémenté
 | |-TCP
 | |-ICMP
 |- IPV6
