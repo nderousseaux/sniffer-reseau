@@ -12,7 +12,6 @@ make && ./analyzer [-i interface] [-o fichier] [-f filtre] [-v niveau]
 
 ## Arborecence des protocoles
 
-
 |-Ethernet              --> Implémenté
 | |-ARP                 --> Implémenté
 | |-IPV4                --> Implémenté 
@@ -20,6 +19,10 @@ make && ./analyzer [-i interface] [-o fichier] [-f filtre] [-v niveau]
 | | |-BOOTP             --> Implémenté
 | | | |-DHCP            --> Implémenté
 | |-TCP
+
+| | | - HTTP
+
 | |-ICMP
+| | |-ECHO
 |- IPV6
 

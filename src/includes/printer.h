@@ -28,6 +28,9 @@ void print_ipv4(const struct ip *iph, int verbose_level);
 /* Affiche l'entête arp */
 void print_arp(const struct ether_arp *arp, int verbose_level);
 
+/* Affiche l'entête icmp */
+void print_icmp(const struct icmp *icmp, int verbose_level);
+
 /* Affiche l'entête udp */
 void print_udp(const struct udphdr *udph, int verbose_level);
 

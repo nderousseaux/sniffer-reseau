@@ -86,7 +86,8 @@ void print_ethernet(const struct ether_header *eth, int verbose_level)
 }
 
 /* Affiche l'entête ipv4 */
-void print_ipv4(const struct ip *iph, int verbose_level){
+void print_ipv4(const struct ip *iph, int verbose_level)
+{
     char ip_type[5];
     
     //On enregistre le nom du protocole
@@ -143,7 +144,8 @@ void print_ipv4(const struct ip *iph, int verbose_level){
 }
 
 /* Affiche l'entête arp */
-void print_arp(const struct ether_arp *arp, int verbose_level){
+void print_arp(const struct ether_arp *arp, int verbose_level)
+{
     char arp_type[10];
     char hardware_type[10];
     char protocol_type[10];
@@ -227,8 +229,115 @@ void print_arp(const struct ether_arp *arp, int verbose_level){
     }
 }
 
+/* Affiche l'entête icmp */
+void print_icmp(const struct icmp *icmp, int verbose_level){
+    char icmp_type[50]; //TODO Tout vérifier (made in github)
+    char icmp_code[50];
+
+    //On enregistre le nom du type
+    switch(icmp->icmp_type)
+    {
+        case ICMP_ECHOREPLY:
+            strcpy(icmp_type, "Echo Reply");
+            break;
+        case ICMP_UNREACH:
+            strcpy(icmp_type, "Destination Unreachable");
+            break;
+        case ICMP_SOURCEQUENCH:
+            strcpy(icmp_type, "Source Quench");
+            break;
+        case ICMP_REDIRECT:
+            strcpy(icmp_type, "Redirect");
+            break;
+        case ICMP_ECHO:
+            strcpy(icmp_type, "Echo Request");
+            break;
+        case ICMP_TIMXCEED:
+            strcpy(icmp_type, "Time Exceeded");
+            break;
+        case ICMP_PARAMPROB:
+            strcpy(icmp_type, "Parameter Problem");
+            break;
+        case ICMP_TSTAMP:
+            strcpy(icmp_type, "Timestamp Request");
+            break;
+        case ICMP_TSTAMPREPLY:
+            strcpy(icmp_type, "Timestamp Reply");
+            break;
+        case ICMP_IREQ:
+            strcpy(icmp_type, "Information Request");
+            break;
+        case ICMP_IREQREPLY:
+            strcpy(icmp_type, "Information Reply");
+            break;
+        case ICMP_MASKREQ:
+            strcpy(icmp_type, "Address Mask Request");
+            break;
+        case ICMP_MASKREPLY:
+            strcpy(icmp_type, "Address Mask Reply");
+            break;
+        default:
+            strcpy(icmp_type, "???");
+            break;
+    }
+
+    //On enregistre le nom du code
+    switch(icmp->icmp_code)
+    {
+        case ICMP_UNREACH_NET:
+            strcpy(icmp_code, "Network Unreachable");
+            break;
+        case ICMP_UNREACH_HOST:
+            strcpy(icmp_code, "Host Unreachable");
+            break;
+        case ICMP_UNREACH_PROTOCOL:
+            strcpy(icmp_code, "Protocol Unreachable");
+            break;
+        case ICMP_UNREACH_PORT:
+            strcpy(icmp_code, "Port Unreachable");
+            break;
+        case ICMP_UNREACH_NEEDFRAG:
+            strcpy(icmp_code, "Fragmentation Needed");
+            break;
+        case ICMP_UNREACH_SRCFAIL:
+            strcpy(icmp_code, "Source Route Failed");
+            break;
+        case ICMP_UNREACH_NET_UNKNOWN:
+            strcpy(icmp_code, "Network Unknown");
+            break;
+        default:
+            strcpy(icmp_code, "???");
+            break;
+    }
+
+    //On affiche l'entête
+    switch (verbose_level)
+    {
+        case 1:
+            printf(" %s ", inet_ntoa(*(struct in_addr *)&icmp->icmp_ip.ip_src));
+            printf("> %s",inet_ntoa(*(struct in_addr *)&icmp->icmp_ip.ip_dst));
+            break;
+        case 2:
+            printf("ICMP: %s ", inet_ntoa(*(struct in_addr *)&icmp->icmp_ip.ip_src));
+            printf("est %s\n", inet_ntoa(*(struct in_addr *)&icmp->icmp_ip.ip_dst));
+            break;
+        case 3:
+            printf(" ├ Trame ICMP %s ", inet_ntoa(*(struct in_addr *)&icmp->icmp_ip.ip_src));
+            printf("est %s\n", inet_ntoa(*(struct in_addr *)&icmp->icmp_ip.ip_dst));
+            printf(" | ├ Type: %s\n", icmp_type);
+            printf(" | ├ Code: %s\n", icmp_code);
+            printf(" | ├ Checksum: %d\n", icmp->icmp_cksum);
+            printf(" | ├ ID: %d\n", icmp->icmp_id);
+            printf(" | ├ Sequence: %d\n", icmp->icmp_seq);
+            break;
+        default:
+            break;
+    }
+}
+
 /* Affiche l'entête udp */
-void print_udp(const struct udphdr *udph, int verbose_level){
+void print_udp(const struct udphdr *udph, int verbose_level)
+{
 
     //On affiche l'entête
     switch (verbose_level)

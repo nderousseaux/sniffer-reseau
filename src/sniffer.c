@@ -114,10 +114,25 @@ void compute_arp(const u_char **pck, int verbose_level)
 /* Traite un paquet icmp */
 void compute_icmp(const u_char **pck, int verbose_level)
 {
-    (void) pck;
-    (void) verbose_level; 
-    printf(" | Protocole icmp non supporté\n");
-    //TODO
+    struct icmp *icmp = (struct icmp *) *pck;
+
+    //On affiche la couche transport
+    print_icmp(icmp, verbose_level);
+
+    // //On saute l'entête icmp //TODO; Supprimer 
+    // *pck += 8;
+
+    // // //On teste le protocole de la couche application
+    // // switch (icmp->icmp_type)
+    // // {
+    // //     case ICMP_ECHO:
+    // //         // compute_icmp_echo(pck, verbose_level);
+    // //         break;
+    // //     default:
+    // //         printf("Protocole de couche application inconnu: %d\n", icmp->icmp_type);
+    // //         printf("Texte brut: %s", *pck);
+    // //         break;
+    // // }
 }
 
 /* Traite un paquet tcp */
