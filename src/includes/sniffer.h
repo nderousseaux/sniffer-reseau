@@ -24,39 +24,39 @@ pcap_t *init_handler(struct args args);
 void compute_paquet(struct args *args, const struct pcap_pkthdr *hdr, const u_char *pck);
 
 /* Traite un paquet ethernet */
-void compute_ethernet(const u_char **pck, int verbose_level);
-
-/* Traite un paquet ipv4 */
-void compute_ipv4(const u_char **pck, int verbose_level);
-
-/* Traite un paquet ipv6 */
-void compute_ipv6(const u_char **pck, int verbose_level);
+void compute_ethernet(const u_char **pck);
 
 /* Traite un paquet arp */
-void compute_arp(const u_char **pck, int verbose_level);
+void compute_arp(const u_char **pck);
+
+/* Traite un paquet ipv4 */
+void compute_ipv4(const u_char **pck);
+
+/* Traite un paquet ipv6 */
+void compute_ipv6(const u_char **pck);
 
 /* Traite un paquet icmp */
-void compute_icmp(const u_char **pck, int verbose_level);
+void compute_icmp(const u_char **pck);
 
 /* Traite un paquet tcp */
-void compute_tcp(const u_char **pck, int verbose_level);
+void compute_tcp(const u_char **pck);
 
 /* Traite un paquet udp */
-void compute_udp(const u_char **pck, int verbose_level);
+void compute_udp(const u_char **pck);
 
 /* Traite un paquet dns */
-void compute_dns(const u_char **pck, int verbose_level);
+void compute_dns(const u_char **pck);
 
 /* Traite un paquet bootp */
-void compute_bootp(const u_char **pck, int verbose_level);
+void compute_bootp(const u_char **pck);
 
 /* Traite la zone vendor specific de bootp (vaut pour le dhcp) */
-void compute_vendor_specific(const u_char **pack, int verbose_level);
+void compute_vendor_specific(const u_char **pack);
 
 /* Traite un paquet http */
-void compute_http(const u_char **pck, int verbose_level);
+void compute_http(const u_char **pck);
 
 /* Traite un paquet https */
-void compute_https(const u_char **pck, int verbose_level);
+void compute_https(const u_char **pck);
 
 #endif

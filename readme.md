@@ -12,17 +12,23 @@ make && ./analyzer [-i interface] [-o fichier] [-f filtre] [-v niveau]
 
 ## Arborecence des protocoles
 
-|-Ethernet              --> Implémenté
-| |-ARP                 --> Implémenté
-| |-IPV4                --> Implémenté 
-| |-UDP                 --> Implémenté
-| | |-BOOTP             --> Implémenté
-| | | |-DHCP            --> Implémenté
-| |-TCP
-
-| | | - HTTP
-
-| |-ICMP
-| | |-ECHO
-|- IPV6
-
+|-Ethernet                  --> Implémenté v1
+| |-ARP                     --> Implémenté v1
+| |-IPV6
+| |-IPV4                    --> Implémenté v1
+| | |-UDP                   --> Implémenté v1
+| | | |-BOOTP               --> Implémenté v1
+| | | | |-DHCP              --> Implémenté v1
+| | | |-DNS
+| | |-TCP
+| | | |-TELNET
+| | | |-FTP
+| | | |-NAT
+| | | |-LDAP
+| | | |-POP
+| | | |-IMAP
+| | | |-SMTP           
+| | | |-HTTP
+| | | |-HTTPS
+| | | |-DNS
+| | |-ICMP                  --> Implémenté v1
