@@ -1,3 +1,5 @@
+//Gère les arguments en entrée du programme
+
 #include "includes/args.h"
 
 /* Parse les arguments et vérifie leur cohérence */

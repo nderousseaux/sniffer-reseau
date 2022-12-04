@@ -1,52 +1,49 @@
+//Recense les fonctions d'affichage
+
 #ifndef H_GL_PRINTER
 #define H_GL_PRINTER
 
-#include <arpa/inet.h>
-#include <netinet/ether.h>
-#include <netinet/if_ether.h>
-#include <netinet/ip_icmp.h>
-#include <netinet/udp.h>
 #include <pcap.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-#include "dns.h"
-#include "protocols.h"
-#include "sniffer.h"
 #include "utils.h"
 
-/* Affiche le header */
-void print_header(const struct pcap_pkthdr *meta, int vl);
+int verbose_level;      //Niveau de verbosité
 
-/* Affiche l'entête ethernet */
-void print_ethernet(const struct ether_header *eth);
+int nb_frames;          // Nombre de frames analysées
+struct timeval *ts;     // Heure du premier paquet
 
-/* Affiche l'entête arp */
-void print_arp(const struct ether_arp *arp);
+struct paquet_info {    // Structure d'affichage
+    const struct pcap_pkthdr    *meta;
+    int                         no;         // Numéro du paquet
+    char                        *src;       // Source
+    char                        *dst;       // Destination
+    char                        *protocol;  // Protocole
+    char                        *infos;     // Informations résumant le paquet
+    struct ether_info           *eth;       // Paquet ethernet
+};
 
-/* Affiche l'entête ipv4 */
-void print_ipv4(const struct ip *iph);
+#define UNKNOWN "Unknown"
 
-/* Affiche l'entête icmp */
-void print_icmp(const struct icmp *icmp);
+/* Initialise le printer */
+void printer_init(int vl);
 
-/* Affiche l'entête udp */
-void print_udp(const struct udphdr *udph);
+/* Affiche le footer */
+void printer_footer();
 
-/* Affiche l'entête bootp */
-void print_bootp(const struct bootp *bootph);
+/* Initialise le print pour le paquet courrant */
+void printer_init_current(const struct pcap_pkthdr *meta);
 
-/* Affiche la zone vendor specific de bootp */
-void print_vendor_specific(const struct vendor_specific_t *vendor_specific);
+/* Get le paquet */
+struct paquet_info *get_paquet_info();
 
-/* Affiche la zone dhcp */
-void print_dhcp(const struct vendor_specific_t *vendor_specific);
+/* Affiche le paquet */
+void print();
 
-/* Affiche un paquet dns */
-void print_dns(const struct dns_t *dns);
+/* Affiche le paquet verbose 1*/
+void print_v1();
 
-/* Affiche le protocole et la taille */
-void print_protocol();
-
-#endif
+#endif // H_GL_PRINTER

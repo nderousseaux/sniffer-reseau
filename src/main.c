@@ -4,6 +4,7 @@
 
 #include "includes/args.h"
 #include "includes/sniffer.h"
+#include "includes/printer.h"
 
 pcap_t *handler = NULL;
 
@@ -26,12 +27,18 @@ int main(int argc, char *argv[])
     //On déclare le handler (pour le CTRL+C)
     signal(SIGINT, end_analyze);
 
+    //On initialise le printer
+    printer_init(args.verbose);
+
     //On lance la capture
     int count = 0;
     if(pcap_loop(handler, count, (pcap_handler)compute_paquet, (u_char*)&args) == PCAP_ERROR){
         fprintf(stderr, "Erreur lors de la capture: %s\n", pcap_geterr(handler));
         return EXIT_FAILURE;
     }
+
+    //On affiche le footer
+    printer_footer();
       
     return EXIT_SUCCESS;
 }

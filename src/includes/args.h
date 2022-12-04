@@ -1,3 +1,5 @@
+//Gère les arguments en entrée du programme
+
 #ifndef H_GL_ARGS
 #define H_GL_ARGS
 
