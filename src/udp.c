@@ -60,6 +60,8 @@ void set_printer_udp(struct udphdr *udp){
         default:
             if (src_port == 53)
                 type = "DNS";
+            else
+                type = "UDP";
             break;
     }
 

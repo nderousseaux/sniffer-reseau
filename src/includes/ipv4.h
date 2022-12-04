@@ -12,12 +12,13 @@
 #include "printer.h"
 #include "utils.h"
 #include "udp.h"
+#include "tcp.h"
 
 struct ipv4_info {
     struct ip           *ipv4;  //Entête IP
     char                *infos; //Informations résumant le paquet
     struct udp_info     *udp;   //Informations UDP
-    // struct tcp_info     *tcp;   //Informations TCP
+    struct tcp_info_2   *tcp;   //Informations TCP
     struct icmp_info    *icmp;  //Informations ICMP
 };
 

@@ -19,8 +19,8 @@ make && ./analyzer [-i interface] [-o fichier] [-f filtre] [-v niveau]
 | | |-UDP                   --> Implémenté v1
 | | | |-BOOTP               --> Implémenté v1
 | | | | |-DHCP              --> Implémenté v1
-| | | |-DNS
-| | |-TCP
+| | | |-DNS                 --> Implémenté v1
+| | |-TCP                   --> Implémenté v1
 | | | |-TELNET
 | | | |-FTP
 | | | |-NAT
@@ -30,5 +30,4 @@ make && ./analyzer [-i interface] [-o fichier] [-f filtre] [-v niveau]
 | | | |-SMTP           
 | | | |-HTTP
 | | | |-HTTPS
-| | | |-DNS
 | | |-ICMP                  --> Implémenté v1

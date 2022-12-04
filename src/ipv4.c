@@ -16,7 +16,7 @@ void compute_ipv4(const u_char **pck){
     switch (iph->ip_p)
     {
         case IPPROTO_TCP:
-            //TODO
+            compute_tcp(pck);
             break;
         case IPPROTO_UDP:
             compute_udp(pck);
