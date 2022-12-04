@@ -41,6 +41,13 @@ void compute_paquet(struct args *args, const struct pcap_pkthdr *meta, const u_c
 
     //On affiche le paquet
     print();
+
+    printf("\n");
+    char * str = printable_pck(packet, meta->len);
+    printf("%s\n", str);
+
+    printf("\n");
+
 }
 
 /* Get le paquet original */

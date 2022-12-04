@@ -7,6 +7,8 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <netinet/ether.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 //Pour x == 0 (parfait pour malloc/calloc) et tout les appels systèmes
 #define CHECK(x) \
@@ -24,6 +26,9 @@ void ether_to_string(struct ether_addr *ether, char * str);
 
 /* Convertit une addresse ipV4 en char * */
 void ip_to_string(struct in_addr *ip, char * str);
+
+/* Renvoie une version printable des x octets du paquet */
+char * printable_pck(const u_char *pck, int x);
 
 
 #endif // H_GL_UTILS
