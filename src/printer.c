@@ -17,7 +17,7 @@ void printer_init(int vl)
     {
         case 1:
             printf("╔═══════╤═══════════════╤═══════════════════════╤═══════════════════════╤═══════╤═══════╤═════════════════════════════════════════════════════════════════╗\n");
-            printf("║ No.\t│ Time\t\t│ Source\t\t│ Destination\t\t│ Proto\t│ Len\t│ Informations\t\t\t\t\t\t\t  ║\n");
+            printf("║ No.\t│ Time\t\t│ Source\t\t│ Destination\t\t│ Proto\t│ Len\t│ Informations\t\t\t\t\t\t\t\t  ║\n");
             printf("╠═══════╪═══════════════╪═══════════════════════╪═══════════════════════╪═══════╪═══════╪═════════════════════════════════════════════════════════════════╣\n");
             break;
         default:
@@ -141,11 +141,11 @@ void print_v1()
     else
     {
         printf("│ %s", paquet->infos);
-    }
-    //On rajoute des espaces pour remplir la colonne
-    for (unsigned int i = strlen(paquet->infos); i < taille_colonne+3; i++)
-    {
-        printf(" ");
+        //On rajoute des espaces pour remplir la colonne
+        for (unsigned int i = strlen(paquet->infos); i < taille_colonne+3; i++)
+        {
+            printf(" ");
+        }
     }
     printf("║");
 }

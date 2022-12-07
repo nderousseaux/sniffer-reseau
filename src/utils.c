@@ -69,7 +69,7 @@ char * printable_pck(const u_char *pck, int x)
 void printable_str(char * str)
 {
     char * new_str;
-    CHECK(new_str = malloc(strlen(str)*2));
+    CHECK(new_str = calloc(strlen(str), 2));
     for(unsigned int i = 0; i < strlen(str); i++)
     {
         if(str[i] == '\n')

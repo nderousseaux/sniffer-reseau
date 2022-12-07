@@ -28,6 +28,7 @@
 #include "dhcp.h"
 #include "dns.h"
 #include "ethernet.h"
+#include "ftp.h"
 #include "icmp.h"
 #include "ipv4.h"
 #include "printer.h"

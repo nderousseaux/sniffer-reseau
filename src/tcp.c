@@ -23,6 +23,10 @@ void compute_tcp(const u_char **pck)
     //On teste le protocole de la couche application
     switch (ntohs(tcph->dest))
     {
+        case 21:
+            get_paquet_info()->eth->ipv4->tcp->type = FTP;
+            compute_ftp(pck, 1);
+            break;
         case 23:
             get_paquet_info()->eth->ipv4->tcp->type = TELNET;
             compute_telnet(pck);
@@ -38,6 +42,10 @@ void compute_tcp(const u_char **pck)
     }
     switch (ntohs(tcph->source))
     {
+        case 21:
+            get_paquet_info()->eth->ipv4->tcp->type = FTP;
+            compute_ftp(pck, 0);
+            break;
         case 23:
             get_paquet_info()->eth->ipv4->tcp->type = TELNET;
             compute_telnet(pck);
@@ -69,7 +77,7 @@ void set_printer_tcp(struct tcphdr *tcp)
     dst_port = ntohs(tcp->dest);
 
     //On définit la chaine des drapeaux
-    CHECK(drapeaux = malloc(10));
+    CHECK(drapeaux = calloc(sizeof(char),10));
     if (tcp->syn)
         strcat(drapeaux, "SYN ");
     if (tcp->ack)
@@ -86,9 +94,9 @@ void set_printer_tcp(struct tcphdr *tcp)
     drapeaux[strlen(drapeaux) - 1] = '\0';
     
     //On remplit tcp_info
-    CHECK(tcp_info = malloc(sizeof(struct tcp_info)));
+    CHECK(tcp_info = calloc(sizeof(struct tcp_info), 1));
     tcp_info->tcp = tcp;
-    CHECK(tcp_info->infos = malloc(255));
+    CHECK(tcp_info->infos = calloc(sizeof(char), 255));
     sprintf(
         tcp_info->infos,
         "Transmission Control Protocol, Src Port: %d, Dst Port: %d, Seq: 0x%x, Ack: 0x%x, Len: 0x%x, Flags: %s",
@@ -125,6 +133,10 @@ void free_tcp_info(struct tcp_info_2 *tcp_info)
     if (tcp_info->type == TELNET)
     {
         free_telnet_info(tcp_info->telnet);
+    }
+    else if (tcp_info->type == FTP)
+    {
+        free_ftp_info(tcp_info->ftp);
     }
 
     free(tcp_info);
