@@ -1,10 +1,5 @@
-#include <pcap.h>
-#include <signal.h>
-#include <stdlib.h>
+#include "includes/includes.h"
 
-#include "includes/args.h"
-#include "includes/sniffer.h"
-#include "includes/printer.h"
 
 pcap_t *handler = NULL;
 

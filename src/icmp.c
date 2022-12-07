@@ -1,5 +1,5 @@
 // Gère un paquet icmp
-#include "includes/icmp.h"
+#include "includes/includes.h"
 
 /* Traite un paquet icmp */
 void compute_icmp(const u_char **pck)
@@ -23,19 +23,19 @@ void set_printer_icmp(struct icmp *icmp)
     switch(icmp->icmp_type)
     {
         case ICMP_ECHOREPLY:
-            type = "Echo (ping) reply";
+            strcpy(type, "Echo (ping) reply");
             break;
         case ICMP_ECHO:
-            type = "Echo (ping) request";
+            strcpy(type, "Echo (ping) request");
             break;
         case ICMP_UNREACH:
-            type = "Destination Unreachable";
+            strcpy(type, "Destination Unreachable");
             break;
         case ICMP_TIMXCEED:
-            type = "Time Exceeded";
+            strcpy(type, "Time Exceeded");
             break;
         default:
-            type = UNKNOWN;
+            strcpy(type, UNKNOWN);
             break;
     }
 
@@ -67,4 +67,14 @@ void set_printer_icmp(struct icmp *icmp)
     paquet_info = get_paquet_info();
     paquet_info->eth->ipv4->icmp = icmp_info;
     strcpy(paquet_info->infos, icmp_info->infos);
+
+    //On libère la mémoire
+    free(type);
+}
+
+/* On libère la mémoire */
+void free_icmp_info(struct icmp_info *icmp_info)
+{
+    free(icmp_info->infos);
+    free(icmp_info);
 }

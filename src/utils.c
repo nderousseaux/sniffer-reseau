@@ -1,6 +1,6 @@
 //Fonctions utiles
 
-#include "includes/utils.h"
+#include "includes/includes.h"
 
 /* Convertit une addresse mac en char * */
 void ether_to_string(struct ether_addr *ether, char * str)
@@ -63,4 +63,24 @@ char * printable_pck(const u_char *pck, int x)
     }
     (void)pck;
     return str;
+}
+
+/* Transforme les \n dans une chaine en caractère imprimable */
+void printable_str(char * str)
+{
+    char * new_str;
+    CHECK(new_str = malloc(strlen(str)*2));
+    for(unsigned int i = 0; i < strlen(str); i++)
+    {
+        if(str[i] == '\n')
+            sprintf(new_str+strlen(new_str), "\\n");
+        else if (str[i] == '\r')
+            sprintf(new_str+strlen(new_str), "\\r");
+        else if (str[i] == '\t')
+            sprintf(new_str+strlen(new_str), "\\t");
+        else
+            sprintf(new_str+strlen(new_str), "%c", str[i]);
+    }
+    strcpy(str, new_str);
+    free(new_str);
 }

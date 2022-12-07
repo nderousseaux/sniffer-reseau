@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "sniffer.h": "c",
-        "args.h": "c"
+        "args.h": "c",
+        "printer.h": "c",
+        "utils.h": "c",
+        "includes.h": "c"
     }
 }

@@ -1,6 +1,6 @@
 // Gère un paquet udp
 
-#include "includes/udp.h"
+#include "includes/includes.h"
 
 /* Traite un paquet udp */
 void compute_udp(const u_char **pck){
@@ -10,7 +10,7 @@ void compute_udp(const u_char **pck){
     set_printer_udp(udph);
 
     //On saute l'entête udp
-    *pck += sizeof(struct udphdr);
+    incr_pck(pck, sizeof(struct udphdr)); 
 
     //On teste le protocole de la couche application
     switch (ntohs(udph->dest))
@@ -49,19 +49,19 @@ void set_printer_udp(struct udphdr *udp){
     switch(dst_port)
     {
         case 53:
-            type = "DNS";
+            strcpy(type, "DNS");
             break;
         case 67:
-            type = "BOOTP";
+            strcpy(type, "BOOTP");
             break;
         case 68:
-            type = "BOOTP";
+            strcpy(type, "BOOTP");
             break;
         default:
             if (src_port == 53)
-                type = "DNS";
+                strcpy(type, "DNS");
             else
-                type = "UDP";
+                strcpy(type, "UDP");
             break;
     }
 
@@ -79,12 +79,23 @@ void set_printer_udp(struct udphdr *udp){
     //On remplit paquet_info
     paquet_info = get_paquet_info();
     paquet_info->eth->ipv4->udp = udp_info;
-    paquet_info->protocol = type;
+    strcpy(paquet_info->protocol, type);
     sprintf(
         paquet_info->infos,
         "UDP, Src Port: %d, Dst Port: %d",
         src_port,
         dst_port
     );
+    
+    free(type);
+}
 
+/* On libère la mémoire */
+void free_udp_info(struct udp_info *udp){
+    free(udp->infos);
+    if(udp->dns != NULL)
+        free_dns_info(udp->dns);
+    if(udp->bootp != NULL)
+        free_bootp_info(udp->bootp);
+    free(udp);
 }

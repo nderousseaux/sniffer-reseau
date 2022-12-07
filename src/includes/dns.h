@@ -2,16 +2,6 @@
 #ifndef H_GL_DNS
 #define H_GL_DNS
 
-#include <arpa/inet.h>
-#include <netinet/ip.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-
-#include "printer.h"
-#include "sniffer.h"
-#include "udp.h"
-#include "utils.h"
 
 struct dns_info {
     struct dns_t        *dns;   //Paquet DNS
@@ -82,5 +72,8 @@ void read_dns_answer(struct dns_answer_t *ans, const u_char **data);
 
 /* Lit un str dans les données (utilise le c0 pour pointer vers une autre zone) */
 void read_dns_name(char* str, const u_char **data);
+
+/* On libère la mémoire */
+void free_dns_info(struct dns_info *dns_info);
 
 #endif // H_GL_DNS

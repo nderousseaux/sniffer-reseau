@@ -1,6 +1,6 @@
 //Gère les arguments en entrée du programme
 
-#include "includes/args.h"
+#include "includes/includes.h"
 
 /* Parse les arguments et vérifie leur cohérence */
 struct args parse_args(int argc, char *argv[])

@@ -1,6 +1,6 @@
 // Gère un paquet arp
 
-#include "includes/arp.h"
+#include "includes/includes.h"
 
 /* Traite un paquet ethernet */
 void compute_arp(const u_char **pck)
@@ -60,4 +60,11 @@ void set_printer_arp(struct ether_arp *arp)
         );
     }
     
+}
+
+/* On libère la mémoire */
+void free_arp_info(struct arp_info *arp_info)
+{
+    free(arp_info->infos);
+    free(arp_info);
 }

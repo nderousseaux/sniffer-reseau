@@ -2,15 +2,6 @@
 #ifndef H_GL_ETH
 #define H_GL_ETH
 
-#include <arpa/inet.h>
-#include <netinet/ether.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "arp.h"
-#include "ipv4.h"
-#include "printer.h"
-#include "utils.h"
 
 struct ether_info {
     struct ether_header *eth;   // Entête ethernet
@@ -25,5 +16,8 @@ void compute_ethernet(const u_char **pck);
 
 /* Définit les variables du printer pour ethernet */
 void set_printer_ethernet(struct ether_header *eth);
+
+/* On libère la mémoire */
+void free_ether_info(struct ether_info *eth_info);
 
 #endif // H_GL_ETH

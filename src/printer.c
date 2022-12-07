@@ -1,9 +1,9 @@
 //Recense les fonctions d'affichage
 
-#include "./includes/printer.h"
+#include "includes/includes.h"
 
 int verbose_level = 1;          //Niveau de verbosité
-int nb_frames = 0;              // Nombre de frames analysées
+int nb_frames = 1;              // Nombre de frames analysées
 struct timeval *ts;             // Heure du premier paquet
 struct paquet_info *paquet;     // Structure d'affichage
 
@@ -46,7 +46,7 @@ void printer_init_current(const struct pcap_pkthdr *meta)
     CHECK(paquet = malloc(sizeof(struct paquet_info)));
 
     //Si c'est la première frame, on enregistre le temps 0 (secondes et microsecondes)
-    if (nb_frames == 0){
+    if (nb_frames == 1){
         ts = malloc(sizeof(struct timeval));
         ts->tv_sec = meta->ts.tv_sec;
         ts->tv_usec = meta->ts.tv_usec;
@@ -58,12 +58,22 @@ void printer_init_current(const struct pcap_pkthdr *meta)
     CHECK(paquet->src = malloc(20));
     CHECK(paquet->dst = malloc(20));
     CHECK(paquet->protocol = malloc(10));
-    CHECK(paquet->infos = malloc(255));
+    CHECK(paquet->infos = malloc(1024));
 }
 
 /* Get le paquet */
 struct paquet_info *get_paquet_info(){
     return paquet;
+}
+
+/* On libère la mémoire */
+void free_paquet_info(){
+    free(paquet->src);
+    free(paquet->dst);
+    free(paquet->protocol);
+    free(paquet->infos);
+    free_ether_info(paquet->eth);
+    free(paquet);
 }
 
 /* Affiche le paquet */
@@ -80,7 +90,6 @@ void print(){
     printf("\n");
 
     nb_frames++;
-    free(paquet);
 }
 
 /* Affiche le paquet verbose 1*/
@@ -112,7 +121,9 @@ void print_v1()
 
 
     //On affiche le protocole
-    printf("│ %s\t", paquet->protocol);
+    printf("│ %s", paquet->protocol);
+    if(strlen(paquet->protocol) < 5)
+        printf("\t");
 
     //On affiche la longueur
     printf("│ %d\t", paquet->meta->len);

@@ -2,18 +2,6 @@
 #ifndef H_GL_BOOTP
 #define H_GL_BOOTP
 
-#include <arpa/inet.h>
-#include <netinet/ip.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-
-#include "printer.h"
-#include "sniffer.h"
-#include "udp.h"
-#include "utils.h"
-#include "dhcp.h"
-
 struct bootp_info {
     struct bootp_t      *bootp;   //Paquet BOOTP
     char                *infos; //Informations résumant le paquet
@@ -44,5 +32,7 @@ void compute_bootp(const u_char **pck);
 /* Définit les variables du printer pour bootp */
 void set_printer_bootp(struct bootp_t *bootp);
 
+/* On libère la mémoire */
+void free_bootp_info(struct bootp_info *bootp_info);
 
 #endif // H_GL_BOOTP

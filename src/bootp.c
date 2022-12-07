@@ -1,6 +1,6 @@
 // Gère un paquet bootp
 
-#include "includes/bootp.h"
+#include "includes/includes.h"
 
 /* Traite un paquet bootp */
 void compute_bootp(const u_char **pck)
@@ -11,12 +11,12 @@ void compute_bootp(const u_char **pck)
     set_printer_bootp(bootp);
 
     //On saute l'entête bootp
-    *pck += 236;
+    incr_pck(pck, 236); 
 
     //Si on détecte le magic cookie, on enregistre la zone vendor specific
     if(**pck == 99 && *(*pck + 1) == 130 && *(*pck + 2) == 83 && *(*pck + 3) == 99)
     {
-        *pck += 4;
+        incr_pck(pck, 4); 
         compute_vs(pck);        
     }
 
@@ -36,13 +36,13 @@ void set_printer_bootp(struct bootp_t *bootp)
     switch (bootp->bp_op)
     {
         case 1:
-            bootp_info->infos = "Bootstap protocol (Request)";
+            sprintf(bootp_info->infos, "Bootstap protocol (Request)");
             break;
         case 2:
-            bootp_info->infos = "Bootsrap protocol (Reply)";
+            sprintf(bootp_info->infos, "Bootsrap protocol (Reply)");
             break;
         default:
-            bootp_info->infos = UNKNOWN;
+            sprintf(bootp_info->infos, UNKNOWN);
             break;
     }
     
@@ -50,4 +50,17 @@ void set_printer_bootp(struct bootp_t *bootp)
     paquet_info = get_paquet_info();
     paquet_info->eth->ipv4->udp->bootp = bootp_info;
     strcpy(paquet_info->infos, bootp_info->infos);
+}
+
+/* On libère la mémoire */
+void free_bootp_info(struct bootp_info *bootp_info)
+{
+    free(bootp_info->infos);
+    free(bootp_info->bootp->bp_file);
+    free(bootp_info->bootp);
+
+    if(bootp_info->vs != NULL)
+        free_vs_info(bootp_info->vs);
+
+    free(bootp_info);
 }

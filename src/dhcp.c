@@ -1,6 +1,6 @@
 // Gère un paquet dhcp (et vendor specific si jamais)
 
-#include "includes/dhcp.h"
+#include "includes/includes.h"
 
 /* Traite la zone vendor specific ou dhcp */
 void compute_vs(const u_char **pck){
@@ -10,13 +10,13 @@ void compute_vs(const u_char **pck){
     while(**pck != 0xff)
     {
         int option = **pck;
-        *pck += 1;
+        incr_pck(pck, 1); 
         options[option] = malloc(sizeof(struct vs_options_t));
         options[option]->length = **pck;
-        *pck += 1;
+        incr_pck(pck, 1); 
         options[option]->value = malloc(options[option]->length);
         memcpy(options[option]->value, *pck, options[option]->length);
-        *pck += options[option]->length;
+        incr_pck(pck, options[option]->length); 
     }
     set_printer_vs(options);
 }
@@ -106,6 +106,22 @@ void set_printer_vs(struct vs_options_t **options)
 
     //On remplit paquet_info
     paquet_info = get_paquet_info();
+    strcpy(paquet_info->protocol, "DHCP");
     paquet_info->eth->ipv4->udp->bootp->vs = vs_info;
     strcpy(paquet_info->infos, vs_info->infos);
+}
+
+/* On libère la mémoire */
+void free_vs_info(struct vs_info *vs_info)
+{
+    for(int i = 0; i < 256; i++)
+    {
+        if(vs_info->options[i] != NULL)
+        {
+            free(vs_info->options[i]->value);
+            free(vs_info->options[i]);
+        }
+    }
+    free(vs_info->infos);
+    free(vs_info);
 }

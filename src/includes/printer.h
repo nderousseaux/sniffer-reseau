@@ -3,14 +3,6 @@
 #ifndef H_GL_PRINTER
 #define H_GL_PRINTER
 
-#include <pcap.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#include "utils.h"
-
 int verbose_level;      //Niveau de verbosité
 
 int nb_frames;          // Nombre de frames analysées
@@ -39,6 +31,9 @@ void printer_init_current(const struct pcap_pkthdr *meta);
 
 /* Get le paquet */
 struct paquet_info *get_paquet_info();
+
+/* On libère la mémoire */
+void free_paquet_info();
 
 /* Affiche le paquet */
 void print();

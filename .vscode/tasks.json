@@ -16,7 +16,7 @@
       {
         "label": "launch",
         "type": "shell",
-        "command": "docker-compose exec analyzer bash -c 'make clean && make debug && gdbserver :8888 ./analyzer -i eth0 -v 3'",
+        "command": "docker-compose exec analyzer bash -c 'make clean && make debug && gdbserver :8888 ./analyzer -o pcap-exemples/telnet.pcapng -v 1'",
         "isBackground": true,
         "presentation": {
           "panel": "shared",

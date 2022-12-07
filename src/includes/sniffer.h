@@ -3,12 +3,6 @@
 #ifndef H_GL_SNIFFER
 #define H_GL_SNIFFER
 
-#include <pcap.h>
-
-#include "args.h"
-#include "ethernet.h"
-#include "printer.h"
-
 /* Ouvre un handler de socket pour la capture de paquets */
 pcap_t *init_handler(struct args args);
 
@@ -17,5 +11,11 @@ void compute_paquet(struct args *args, const struct pcap_pkthdr *hdr, const u_ch
 
 /* Get le paquet original */
 const u_char **get_paquet();
+
+/* Déplace le pointeur de i octets, sur le pointeur pck. Renvoie 0 si on a atteint la taille du packet */
+int incr_pck(const u_char **pck, int i);
+
+/* Renvoie le nombre d'octet restant à analyser */
+int get_remaining_bytes();
 
 #endif //H_GL_SNIFFER

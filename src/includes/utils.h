@@ -3,12 +3,6 @@
 #ifndef H_GL_UTILS
 #define H_GL_UTILS
 
-#include <errno.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <netinet/ether.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 //Pour x == 0 (parfait pour malloc/calloc) et tout les appels systèmes
 #define CHECK(x) \
@@ -30,5 +24,7 @@ void ip_to_string(struct in_addr *ip, char * str);
 /* Renvoie une version printable des x octets du paquet */
 char * printable_pck(const u_char *pck, int x);
 
+/* Transforme les \n dans une chaine en caractère imprimable */
+void printable_str(char * str);
 
 #endif // H_GL_UTILS

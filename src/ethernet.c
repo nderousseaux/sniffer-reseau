@@ -1,5 +1,5 @@
 // Gère un paquet ethernet
-#include "includes/ethernet.h"
+#include "includes/includes.h"
 
 /* Traite un paquet ethernet */
 void compute_ethernet(const u_char **pck)
@@ -10,8 +10,8 @@ void compute_ethernet(const u_char **pck)
     set_printer_ethernet(eth);
 
     // On saute l'entête ethernet
-    *pck += 14;
-
+    incr_pck(pck, 14);
+    
     //On teste le protocole de la couche réseau
     switch (ntohs(eth->ether_type))
     {
@@ -50,19 +50,18 @@ void set_printer_ethernet(struct ether_header *eth)
     switch (ntohs(eth->ether_type))
     {
         case ETHERTYPE_IP:
-            type = "IPv4";
+            strcpy(type, "IPv4");
             break;
         case ETHERTYPE_IPV6:
-            type = "IPv6";
+            strcpy(type, "IPv6");
             break;
         case ETHERTYPE_ARP:
-            type = "ARP";
+            strcpy(type, "ARP");
             break;
         default:
-            type = UNKNOWN;
+            strcpy(type, UNKNOWN);
             break;
     }
-
     //On remplit ethernet_info
     CHECK(eth_info = malloc(sizeof(struct ether_info)));
     eth_info->eth = eth;
@@ -78,8 +77,27 @@ void set_printer_ethernet(struct ether_header *eth)
     paquet_info = get_paquet_info();
     paquet_info->src = src;
     paquet_info->dst = dst;
-    paquet_info->protocol = type;
+    strcpy(paquet_info->protocol, type);
     paquet_info->eth = eth_info;
     strcpy(paquet_info->infos, eth_info->infos);
 
+    free(type);
+}
+
+/* On libère la mémoire */
+void free_ether_info(struct ether_info *eth_info)
+{
+    free(eth_info->infos);
+    switch (ntohs(eth_info->eth->ether_type))
+    {
+        case ETHERTYPE_IP:
+            free_ipv4_info(eth_info->ipv4);
+            break;
+        case ETHERTYPE_ARP:
+            free_arp_info(eth_info->arp);
+            break;
+        default:
+            break;
+    }
+    free(eth_info);
 }

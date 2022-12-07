@@ -21,7 +21,7 @@ make && ./analyzer [-i interface] [-o fichier] [-f filtre] [-v niveau]
 | | | | |-DHCP              --> Implémenté v1
 | | | |-DNS                 --> Implémenté v1
 | | |-TCP                   --> Implémenté v1
-| | | |-TELNET
+| | | |-telnet
 | | | |-FTP
 | | | |-NAT
 | | | |-LDAP

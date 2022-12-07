@@ -2,14 +2,7 @@
 #ifndef H_GL_DHCP
 #define H_GL_DHCP
 
-#include <arpa/inet.h>
-#include <netinet/ether.h>
-#include <stdio.h>
-#include <stdlib.h>
 
-#include "printer.h"
-#include "utils.h"
-#include "bootp.h"
 
 struct vs_info {
     struct vs_options_t   **options; // Liste des options (le type correspond à l'index)
@@ -26,5 +19,8 @@ void compute_vs(const u_char **pck);
 
 /* Définit les variables du printer pour vendor_specific */
 void set_printer_vs(struct vs_options_t **options);
+
+/* On libère la mémoire */
+void free_vs_info(struct vs_info *vs_info);
 
 #endif // H_GL_DHCP

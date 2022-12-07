@@ -1,6 +1,6 @@
 // Gère un paquet ipv4
 
-#include "includes/ipv4.h"
+#include "includes/includes.h"
 
 /* Traite un paquet ipv4 */
 void compute_ipv4(const u_char **pck){
@@ -10,7 +10,7 @@ void compute_ipv4(const u_char **pck){
     set_printer_ipv4(iph);
 
     //On saute l'entête ipv4
-    *pck += iph->ip_hl * 4;
+    incr_pck(pck, iph->ip_hl * 4); 
 
     //On teste le protocole de la couche transport
     switch (iph->ip_p)
@@ -50,16 +50,16 @@ void set_printer_ipv4(struct ip *ipv4){
     switch(ipv4->ip_p)
     {
         case IPPROTO_TCP:
-            type = "TCP";
+            strcpy(type, "TCP");
             break;
         case IPPROTO_UDP:
-            type = "UDP";
+            strcpy(type, "UDP");
             break;
         case IPPROTO_ICMP:
-            type = "ICMP";
+            strcpy(type, "ICMP");
             break;
         default:
-            type = UNKNOWN;
+            strcpy(type, UNKNOWN);
             break;
     }
 
@@ -78,7 +78,7 @@ void set_printer_ipv4(struct ip *ipv4){
     paquet_info = get_paquet_info();
     paquet_info->src = src;
     paquet_info->dst = dst;
-    paquet_info->protocol = type;
+    strcpy(paquet_info->protocol, type);
     paquet_info->eth->ipv4 = ipv4_info;
     sprintf(
         paquet_info->infos,
@@ -86,4 +86,28 @@ void set_printer_ipv4(struct ip *ipv4){
         src,
         dst
     );
+
+    //On libère la mémoire
+    free(type);
+}
+
+
+/* On libère la mémoire */
+void free_ipv4_info(struct ipv4_info *ipv4_info){
+    free(ipv4_info->infos);
+    switch(ipv4_info->ipv4->ip_p)
+    {
+        case IPPROTO_TCP:
+            free_tcp_info(ipv4_info->tcp);
+            break;
+        case IPPROTO_UDP:
+            free_udp_info(ipv4_info->udp);
+            break;
+        case IPPROTO_ICMP:
+            free_icmp_info(ipv4_info->icmp);
+            break;
+        default:
+            break;
+    }
+    free(ipv4_info);
 }

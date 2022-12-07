@@ -1,8 +1,9 @@
 //Boucle principale de l'appli, redirige vers les fonctions de traitement de chaque protocole
 
-#include "includes/sniffer.h"
+#include "includes/includes.h"
 
 const u_char *packet;
+int nb_incr = 0;
 
 /* Ouvre un handler de socket pour la capture de paquets */
 pcap_t *init_handler(struct args args)
@@ -29,9 +30,10 @@ pcap_t *init_handler(struct args args)
 void compute_paquet(struct args *args, const struct pcap_pkthdr *meta, const u_char *pck)
 {
     (void)args;
-
     //On enregistre le paquet
     packet = pck;
+    //On remet le compteur de décalage à 0
+    nb_incr = 0;
     
     //On initialise le printer
     printer_init_current(meta);
@@ -41,9 +43,31 @@ void compute_paquet(struct args *args, const struct pcap_pkthdr *meta, const u_c
 
     //On affiche le paquet
     print();
+    //On libère la mémoire
+    free_paquet_info();
 }
 
 /* Get le paquet original */
 const u_char **get_paquet(){
     return &packet;
 }
+
+
+/* Déplace le pointeur de i octets, sur le pointeur pck. Renvoie 0 si on a atteint la taille du packet */
+int incr_pck(const u_char **pck, int i)
+{   
+    unsigned int len = (unsigned int) nb_incr + i;
+    if(len > get_paquet_info()->meta->len)
+        return 0;
+    
+    *pck += i;
+    nb_incr += i;
+    return i;
+}
+
+/* Renvoie le nombre d'octet restant à analyser */
+int get_remaining_bytes()
+{
+    return get_paquet_info()->meta->len - nb_incr;
+}
+

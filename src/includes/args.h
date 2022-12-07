@@ -3,9 +3,6 @@
 #ifndef H_GL_ARGS
 #define H_GL_ARGS
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 /* Structure pour stocker les arguments */
 struct args {
