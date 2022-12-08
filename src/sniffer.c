@@ -23,6 +23,22 @@ pcap_t *init_handler(struct args args)
         exit(EXIT_FAILURE);
     }
 
+    //On set le filtre
+    if(args.filter != NULL){
+
+        //On compile le filtre
+        struct bpf_program filter;
+        if(pcap_compile(handle, &filter, args.filter, 0, PCAP_NETMASK_UNKNOWN) == -1){
+            fprintf(stderr, "Impossible de compiler le filtre: %s\n", pcap_geterr(handle));
+            exit(EXIT_FAILURE);
+        }
+
+        if(pcap_setfilter(handle, &filter) == -1){
+            fprintf(stderr, "Impossible d'appliquer le filtre: %s\n", pcap_geterr(handle));
+            exit(EXIT_FAILURE);
+        }
+    }
+
     return handle;
 }
 

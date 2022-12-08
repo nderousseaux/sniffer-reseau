@@ -31,6 +31,7 @@
 #include "ftp.h"
 #include "icmp.h"
 #include "ipv4.h"
+#include "pop.h"
 #include "printer.h"
 #include "sniffer.h"
 #include "tcp.h"

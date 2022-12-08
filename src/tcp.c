@@ -6,16 +6,15 @@
 void compute_tcp(const u_char **pck)
 {
     struct tcphdr *tcph = (struct tcphdr *) *pck;
-
     //On définit la couche transport
     set_printer_tcp(tcph);
+    get_paquet_info()->eth->ipv4->tcp->type = PURE_TCP;
 
     //On saute l'entête tcp
     incr_pck(pck,tcph->doff * 4); 
 
     //Si le paquet est vide, on sort
-    if(get_remaining_bytes() == 0){
-        get_paquet_info()->eth->ipv4->tcp->type = PURE_TCP;
+    if(get_remaining_bytes() == 0 || !tcph->psh){
         return;
     }
         
@@ -33,6 +32,10 @@ void compute_tcp(const u_char **pck)
             break;
         case 80:
             //TODO: compute_http(pck);
+            break;
+        case 110:
+            get_paquet_info()->eth->ipv4->tcp->type = POP;
+            compute_pop(pck, 1);
             break;
         case 443:
             //TODO: compute_https(pck);
@@ -52,6 +55,10 @@ void compute_tcp(const u_char **pck)
             break;
         case 80:
             //TODO: compute_http(pck);
+            break;
+        case 110:
+            get_paquet_info()->eth->ipv4->tcp->type = POP;
+            compute_pop(pck, 0);
             break;
         case 443:
             //TODO: compute_https(pck);
@@ -107,6 +114,9 @@ void set_printer_tcp(struct tcphdr *tcp)
         tcp->doff * 4,
         drapeaux
     );
+    tcp_info->telnet = NULL;
+    tcp_info->ftp = NULL;
+    tcp_info->pop = NULL;
 
     //On remplit paquet_info
     paquet_info = get_paquet_info();
@@ -138,6 +148,9 @@ void free_tcp_info(struct tcp_info_2 *tcp_info)
     {
         free_ftp_info(tcp_info->ftp);
     }
-
+    else if (tcp_info->type == POP && tcp_info->pop != NULL)
+    {
+        free_pop_logs(tcp_info->pop);
+    }
     free(tcp_info);
 }

@@ -84,7 +84,7 @@ void set_printer_ftp(struct ftp_t *ftp)
     }
     else
         sprintf(infos, 
-        "Response: %s",
+        "Response: %s %s",
         ftp->response_code,
         ftp->response_arg
     );

@@ -17,7 +17,7 @@ void printer_init(int vl)
     {
         case 1:
             printf("╔═══════╤═══════════════╤═══════════════════════╤═══════════════════════╤═══════╤═══════╤═════════════════════════════════════════════════════════════════╗\n");
-            printf("║ No.\t│ Time\t\t│ Source\t\t│ Destination\t\t│ Proto\t│ Len\t│ Informations\t\t\t\t\t\t\t\t  ║\n");
+            printf("║ No.\t│ Time\t\t│ Source\t\t│ Destination\t\t│ Proto\t│ Len\t│ Informations\t\t\t\t\t\t\t  ║\n");
             printf("╠═══════╪═══════════════╪═══════════════════════╪═══════════════════════╪═══════╪═══════╪═════════════════════════════════════════════════════════════════╣\n");
             break;
         default:
@@ -33,7 +33,7 @@ void printer_footer()
     {
         case 1:
             printf("╚═══════╧═══════════════╧═══════════════════════╧═══════════════════════╧═══════╧═══════╧═════════════════════════════════════════════════════════════════╝\n");
-            printf("Nombre de paquets analysés : %d\n", nb_frames);
+            printf("Nombre de paquets analysés : %d\n", nb_frames-1);
             break;
         default:
             break;
@@ -130,6 +130,7 @@ void print_v1()
 
     //Si les infos dépassent la taille de la colonne, on les coupe et on rajoute des points de suspension
     unsigned int taille_colonne = 61;
+    printable_str(paquet->infos);
     if (strlen(paquet->infos) > taille_colonne)
     {
         char *infos = malloc(taille_colonne);
