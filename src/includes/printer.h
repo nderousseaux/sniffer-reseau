@@ -3,6 +3,8 @@
 #ifndef H_GL_PRINTER
 #define H_GL_PRINTER
 
+#define SIZE_COLONE_INFO 80 // Taille de la colonne d'informations (verbose 1)
+
 int verbose_level;      //Niveau de verbosité
 
 int nb_frames;          // Nombre de frames analysées
@@ -24,7 +26,7 @@ struct paquet_info {    // Structure d'affichage
 void printer_init(int vl);
 
 /* Affiche le footer */
-void printer_footer();
+void print_footer();
 
 /* Initialise le print pour le paquet courrant */
 void printer_init_current(const struct pcap_pkthdr *meta);
@@ -37,6 +39,12 @@ void free_paquet_info();
 
 /* Affiche le paquet */
 void print();
+
+/* Affiche l'entête en verbose 1 */
+void print_header_v1();
+
+/* Affiche le footer en verbose 1 */
+void print_footer_v1();
 
 /* Affiche le paquet verbose 1*/
 void print_v1();

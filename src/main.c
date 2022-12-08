@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     }
 
     //On affiche le footer
-    printer_footer();
+    print_footer();
       
     return EXIT_SUCCESS;
 }

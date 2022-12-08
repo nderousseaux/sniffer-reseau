@@ -7,6 +7,7 @@ int nb_frames = 1;              // Nombre de frames analysées
 struct timeval *ts;             // Heure du premier paquet
 struct paquet_info *paquet;     // Structure d'affichage
 
+
 /* Initialise le printer */
 void printer_init(int vl)
 {
@@ -16,9 +17,7 @@ void printer_init(int vl)
     switch (verbose_level)
     {
         case 1:
-            printf("╔═══════╤═══════════════╤═══════════════════════╤═══════════════════════╤═══════╤═══════╤═════════════════════════════════════════════════════════════════╗\n");
-            printf("║ No.\t│ Time\t\t│ Source\t\t│ Destination\t\t│ Proto\t│ Len\t│ Informations\t\t\t\t\t\t\t  ║\n");
-            printf("╠═══════╪═══════════════╪═══════════════════════╪═══════════════════════╪═══════╪═══════╪═════════════════════════════════════════════════════════════════╣\n");
+            print_header_v1();
             break;
         default:
             break;
@@ -26,18 +25,18 @@ void printer_init(int vl)
 }
 
 /* Affiche le footer */
-void printer_footer()
+void print_footer()
 {
     //On affiche le footer
     switch (verbose_level)
     {
         case 1:
-            printf("╚═══════╧═══════════════╧═══════════════════════╧═══════════════════════╧═══════╧═══════╧═════════════════════════════════════════════════════════════════╝\n");
-            printf("Nombre de paquets analysés : %d\n", nb_frames-1);
+            print_footer_v1();
             break;
         default:
             break;
     }
+    printf("Nombre de paquets analysés : %d\n", nb_frames-1);
 }
 
 /* Initialise le print pour le paquet courrant */
@@ -92,6 +91,41 @@ void print(){
     nb_frames++;
 }
 
+/* Affiche l'entête en verbose 1 */
+void print_header_v1()
+{
+    printf("╔═══════╤═══════════════╤═══════════════════════╤═══════════════════════╤═══════╤═══════╤");
+    for (int i = 0; i < SIZE_COLONE_INFO; i++)
+    {
+        printf("═");
+    }
+    printf("╗\n");
+
+    printf("║ No.\t│ Time\t\t│ Source\t\t│ Destination\t\t│ Proto\t│ Len\t│ Informations");
+    for (int i = 0; i < SIZE_COLONE_INFO-13; i++)
+    {
+        printf(" ");
+    }
+    printf("║\n");
+    printf("╠═══════╪═══════════════╪═══════════════════════╪═══════════════════════╪═══════╪═══════╪");
+    for (int i = 0; i < SIZE_COLONE_INFO; i++)
+    {
+        printf("═");
+    }
+    printf("╣\n");
+}
+
+/* Affiche le footer en verbose 1 */
+void print_footer_v1()
+{
+    printf("╚═══════╧═══════════════╧═══════════════════════╧═══════════════════════╧═══════╧═══════╧");
+    for (int i = 0; i < SIZE_COLONE_INFO; i++)
+    {
+        printf("═");
+    }
+    printf("╝\n");
+}
+
 /* Affiche le paquet verbose 1*/
 void print_v1()
 {
@@ -129,24 +163,24 @@ void print_v1()
     printf("│ %d\t", paquet->meta->len);
 
     //Si les infos dépassent la taille de la colonne, on les coupe et on rajoute des points de suspension
-    unsigned int taille_colonne = 61;
+    printf("│ ");
     printable_str(paquet->infos);
-    if (strlen(paquet->infos) > taille_colonne)
+    if (strlen(paquet->infos) > SIZE_COLONE_INFO-2)
     {
-        char *infos = malloc(taille_colonne);
-        strncpy(infos, paquet->infos, taille_colonne);
-        infos[taille_colonne] = '\0';
-        printf("│ %s...", infos);
+        char *infos;
+        CHECK(infos = calloc(SIZE_COLONE_INFO+1, sizeof(char)));
+        //On définit manuellement les infos
+        strncpy(infos, paquet->infos, SIZE_COLONE_INFO-4);
+        infos[SIZE_COLONE_INFO] = '\0';
+        printf("%s...", infos);
         free(infos);
     }
     else
+        printf("%s", paquet->infos);
+    //On rajoute des espaces pour remplir la colonne
+    for (unsigned int i = strlen(paquet->infos); i < SIZE_COLONE_INFO-1; i++)
     {
-        printf("│ %s", paquet->infos);
-        //On rajoute des espaces pour remplir la colonne
-        for (unsigned int i = strlen(paquet->infos); i < taille_colonne+3; i++)
-        {
-            printf(" ");
-        }
+        printf(" ");
     }
     printf("║");
 }
