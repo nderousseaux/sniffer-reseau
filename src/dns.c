@@ -305,48 +305,8 @@ void read_dns_name(char* str, const u_char **data)
 void free_dns_info(struct dns_info *dns)
 {
     free(dns->infos);
-    //On libère les queries
-    for(int i = 0; i < dns->dns->header->q_count; i++){
-        free(dns->dns->queries[i].name);
-        free(dns->dns->queries[i].type);
-        free(dns->dns->queries[i].class);
-    }
-    free(dns->dns->queries);
 
-    //On libère les answers
-    for(int i = 0; i < dns->dns->header->ans_count; i++){
-        free(dns->dns->answers[i].name);
-        free(dns->dns->answers[i].type);
-        free(dns->dns->answers[i].class);
-        free(dns->dns->answers[i].main_info);
-        free(dns->dns->answers[i].responsible_mail);
-        free(dns->dns->answers[i].txt);
-    }
-    free(dns->dns->answers);
-
-    //On libère les authorities
-    for(int i = 0; i < dns->dns->header->auth_count; i++){
-        free(dns->dns->authorities[i].name);
-        free(dns->dns->authorities[i].type);
-        free(dns->dns->authorities[i].class);
-        free(dns->dns->authorities[i].main_info);
-        free(dns->dns->authorities[i].responsible_mail);
-        free(dns->dns->authorities[i].txt);
-    }
-    free(dns->dns->authorities);
-
-    //On libère les additional
-    for(int i = 0; i < dns->dns->header->add_count; i++){
-        free(dns->dns->additionals[i].name);
-        free(dns->dns->additionals[i].type);
-        free(dns->dns->additionals[i].class);
-        free(dns->dns->additionals[i].main_info);
-        free(dns->dns->additionals[i].responsible_mail);
-        free(dns->dns->additionals[i].txt);
-    }
-    free(dns->dns->additionals);
-
-    free(dns->dns->header);
+    //TODO: Libérer les réponses
     free(dns->dns);
     free(dns);
 }

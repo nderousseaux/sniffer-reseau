@@ -140,7 +140,7 @@ void set_printer_tcp(struct tcphdr *tcp)
 void free_tcp_info(struct tcp_info_2 *tcp_info)
 {
     free(tcp_info->infos);
-    if (tcp_info->type == TELNET)
+    if (tcp_info->type == TELNET && tcp_info->telnet != NULL)
     {
         free_telnet_info(tcp_info->telnet);
     }

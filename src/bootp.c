@@ -56,8 +56,6 @@ void set_printer_bootp(struct bootp_t *bootp)
 void free_bootp_info(struct bootp_info *bootp_info)
 {
     free(bootp_info->infos);
-    free(bootp_info->bootp->bp_file);
-    free(bootp_info->bootp);
 
     if(bootp_info->vs != NULL)
         free_vs_info(bootp_info->vs);

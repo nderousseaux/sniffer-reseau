@@ -7,6 +7,9 @@ void compute_telnet(const u_char **pck)
     //On déclare une struct telnet
     struct telnet *telnet;
     CHECK(telnet = malloc(sizeof(struct telnet)));
+    telnet->nb_options = 0;
+    telnet->options = NULL;
+    telnet->data = NULL;
 
     //Si le paquet commence par 0xff, on a une commande
     if(**pck == 0xff)
@@ -14,7 +17,7 @@ void compute_telnet(const u_char **pck)
     //Sinon, on a des données
     else
         save_telnet_data(telnet, pck);
-    
+
     //On définit la couche application
     set_printer_telnet(telnet);
 }
@@ -22,8 +25,9 @@ void compute_telnet(const u_char **pck)
 /* Sauvegarde un paquet telnet de type commande */
 void save_telnet_command(struct telnet *telnet, const u_char **pck)
 {
-    CHECK(telnet->options = malloc(sizeof(struct telnet_options)*255));
+    CHECK(telnet->options = calloc(255, sizeof(struct telnet_options)));
     telnet->nb_options = 0;
+    telnet->data = NULL;
     // Tant que le paquet n'est pas vide, on stocke les options
     enum {mode_option, mode_subcommand, mode_data_option} mode;
     do
@@ -54,7 +58,7 @@ void save_telnet_command(struct telnet *telnet, const u_char **pck)
             //Si on est en mode data option, on stocke les données
             case mode_data_option:
                 if (telnet->options[telnet->nb_options-1].length_data == 0)
-                    CHECK(telnet->options[telnet->nb_options-1].data = malloc(sizeof(char)*1024));
+                    CHECK(telnet->options[telnet->nb_options-1].data = calloc(1024, sizeof(char)));
 
                 //Pour chaque octet, on stocke les données
                 sprintf(
@@ -75,23 +79,24 @@ void save_telnet_command(struct telnet *telnet, const u_char **pck)
 /* Sauvegarde un paquet telnet de type données */
 void save_telnet_data(struct telnet *telnet, const u_char **pck)
 {
-    CHECK(telnet->data = malloc(sizeof(char)*1024));
+    char *data;
+    CHECK(data = calloc(1024, sizeof(char)));
     do
     {
         sprintf(
-            telnet->data,
+            data,
             "%s%c",
-            telnet->data,
+            data,
             **pck
         );
     } while(incr_pck(pck, 1));
-    // printf("\nTelnet Data: %s\n", telnet->data);
     sprintf(
-        telnet->data,
+        data,
         "%s%c",
-        telnet->data,
+        data,
         '\0'
     );
+    telnet->data = data;
 }
 
 /* Définit les variables du printer pour telnet */
@@ -211,6 +216,16 @@ char * get_telnet_subcommand(enum telnet_subcommand subcommand)
 /* On libère la mémoire */
 void free_telnet_info(struct telnet_info *telnet)
 {
+    if(telnet->telnet->data != NULL)
+        free(telnet->telnet->data);
+    if(telnet->telnet->options != NULL){
+        for(int i = 0; i < telnet->telnet->nb_options; i++)
+            if(telnet->telnet->options[i].data != NULL)
+                free(telnet->telnet->options[i].data);
+        free(telnet->telnet->options);
+    }
+
+
     free(telnet->telnet);
     free(telnet->infos);
     free(telnet);
