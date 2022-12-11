@@ -59,6 +59,7 @@ void compute_paquet(struct args *args, const struct pcap_pkthdr *meta, const u_c
 
     //On affiche le paquet
     print();
+
     //On libère la mémoire
     free_paquet_info();
 }
@@ -69,12 +70,12 @@ const u_char **get_paquet(){
 }
 
 
-/* Déplace le pointeur de i octets, sur le pointeur pck. Renvoie 0 si on a atteint la taille du packet */
+/* Déplace le pointeur de i octets, sur le pointeur pck. Renvoie le nombre d'octets déplacés */
 int incr_pck(const u_char **pck, int i)
 {   
     unsigned int len = (unsigned int) nb_incr + i;
     if(len > get_paquet_info()->meta->len)
-        return 0;
+        i = get_paquet_info()->meta->len - nb_incr;
     
     *pck += i;
     nb_incr += i;

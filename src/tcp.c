@@ -37,6 +37,10 @@ void compute_tcp(const u_char **pck)
             get_paquet_info()->eth->ipv4->tcp->type = POP;
             compute_pop(pck, 1);
             break;
+        case 143:
+            get_paquet_info()->eth->ipv4->tcp->type = IMAP;
+            compute_imap(pck, 1);
+            break;
         case 443:
             //TODO: compute_https(pck);
             break;
@@ -59,6 +63,10 @@ void compute_tcp(const u_char **pck)
         case 110:
             get_paquet_info()->eth->ipv4->tcp->type = POP;
             compute_pop(pck, 0);
+            break;
+        case 143:
+            get_paquet_info()->eth->ipv4->tcp->type = IMAP;
+            compute_imap(pck, 0);
             break;
         case 443:
             //TODO: compute_https(pck);
@@ -117,6 +125,7 @@ void set_printer_tcp(struct tcphdr *tcp)
     tcp_info->telnet = NULL;
     tcp_info->ftp = NULL;
     tcp_info->pop = NULL;
+    tcp_info->imap = NULL;
 
     //On remplit paquet_info
     paquet_info = get_paquet_info();
@@ -151,6 +160,10 @@ void free_tcp_info(struct tcp_info_2 *tcp_info)
     else if (tcp_info->type == POP && tcp_info->pop != NULL)
     {
         free_pop_logs(tcp_info->pop);
+    }
+    else if (tcp_info->type == IMAP && tcp_info->imap != NULL)
+    {
+        free_imap_logs(tcp_info->imap);
     }
     free(tcp_info);
 }

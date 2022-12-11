@@ -5,10 +5,11 @@
 struct tcp_info_2 { //Car il existe déjà une structure tcp_info
     struct tcphdr       *tcp;      // Header tcp
     char                *infos;    // Informations sur le paquet
-    enum {TELNET, PURE_TCP, FTP, POP}       type;     // Type de paquet
+    enum {TELNET, PURE_TCP, FTP, POP, IMAP}       type;     // Type de paquet
     struct telnet_info  *telnet;   // Informations sur le paquet telnet
     struct ftp_info     *ftp;      // Informations sur le paquet ftp
     struct pop_logs     *pop;      // Informations sur le paquet pop
+    struct imap_logs    *imap;     // Informations sur le paquet imap
 };
 
 /* Traite un paquet tcp */

@@ -92,10 +92,10 @@ void set_printer_udp(struct udphdr *udp){
 
 /* On libère la mémoire */
 void free_udp_info(struct udp_info *udp){
-    free(udp->infos);
-    if(udp->dns != NULL)
-        free_dns_info(udp->dns);
-    if(udp->bootp != NULL)
-        free_bootp_info(udp->bootp);
+    // free(udp->infos);
+    // if(udp->dns != NULL)
+    //     free_dns_info(udp->dns);
+    // if(udp->bootp != NULL)
+    //     free_bootp_info(udp->bootp);
     free(udp);
 }

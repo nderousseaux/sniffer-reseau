@@ -30,6 +30,7 @@
 #include "ethernet.h"
 #include "ftp.h"
 #include "icmp.h"
+#include "imap.h"
 #include "ipv4.h"
 #include "pop.h"
 #include "printer.h"
