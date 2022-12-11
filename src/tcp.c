@@ -14,7 +14,13 @@ void compute_tcp(const u_char **pck)
     incr_pck(pck,tcph->doff * 4); 
 
     //Si le paquet est vide, on sort
-    if(get_remaining_bytes() == 0 || !tcph->psh){
+    if(
+        get_remaining_bytes() == 0 ||
+        (
+            !tcph->psh &&
+            ntohs(tcph->source) != 80
+        )
+    ){
         return;
     }
         
@@ -35,7 +41,8 @@ void compute_tcp(const u_char **pck)
             compute_smtp(pck, 1);
             break;
         case 80:
-            //TODO: compute_http(pck);
+            get_paquet_info()->eth->ipv4->tcp->type = HTTP;
+            compute_http(pck, 1);
             break;
         case 110:
             get_paquet_info()->eth->ipv4->tcp->type = POP;
@@ -66,7 +73,8 @@ void compute_tcp(const u_char **pck)
             compute_smtp(pck, 0);
             break;
         case 80:
-            //TODO: compute_http(pck);
+            get_paquet_info()->eth->ipv4->tcp->type = HTTP;
+            compute_http(pck, 0);
             break;
         case 110:
             get_paquet_info()->eth->ipv4->tcp->type = POP;
@@ -135,6 +143,7 @@ void set_printer_tcp(struct tcphdr *tcp)
     tcp_info->pop = NULL;
     tcp_info->imap = NULL;
     tcp_info->smtp = NULL;
+    tcp_info->http = NULL;
 
     //On remplit paquet_info
     paquet_info = get_paquet_info();
@@ -177,6 +186,10 @@ void free_tcp_info(struct tcp_info_2 *tcp_info)
     else if (tcp_info->type == SMTP && tcp_info->smtp != NULL)
     {
         free_smtp_logs(tcp_info->smtp);
+    }
+    else if (tcp_info->type == HTTP && tcp_info->http != NULL)
+    {
+        free_http_logs(tcp_info->http);
     }
     free(tcp_info);
 }

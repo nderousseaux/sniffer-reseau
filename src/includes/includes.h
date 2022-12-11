@@ -40,5 +40,6 @@
 #include "telnet.h"
 #include "udp.h"
 #include "utils.h"
+#include "http.h"
 
 #endif // INCLUDES_H

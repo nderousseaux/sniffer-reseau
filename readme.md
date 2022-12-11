@@ -14,7 +14,7 @@ make && ./analyzer [-i interface] [-o fichier] [-f filtre] [-v niveau]
 
 |-Ethernet                  --> Implémenté v1
 | |-ARP                     --> Implémenté v1
-| |-IPV6                    
+| |-IPV6                    --> Implémenté v1
 | |-IPV4                    --> Implémenté v1
 | | |-UDP                   --> Implémenté v1
 | | | |-BOOTP               --> Implémenté v1
@@ -24,9 +24,9 @@ make && ./analyzer [-i interface] [-o fichier] [-f filtre] [-v niveau]
 | | | |-telnet              --> Implémenté v1
 | | | |-FTP                 --> Implémenté v1
 | | | |-POP                 --> Implémenté v1
-| | | |-IMAP
-| | | |-SMTP           
-| | | |-HTTP
-| | | |-HTTPS
-| | | |-DNS
+| | | |-IMAP                --> Implémenté v1
+| | | |-SMTP                --> Implémenté v1    
+| | | |-HTTP                --> Implémenté v1 ??
+| | | |-HTTPS               --> TODO
+| | | |-DNS                 --> TODO
 | | |-ICMP                  --> Implémenté v1
