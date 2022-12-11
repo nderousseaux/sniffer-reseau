@@ -34,6 +34,7 @@
 #include "ipv4.h"
 #include "pop.h"
 #include "printer.h"
+#include "smtp.h"
 #include "sniffer.h"
 #include "tcp.h"
 #include "telnet.h"

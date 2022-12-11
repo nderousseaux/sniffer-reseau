@@ -30,6 +30,10 @@ void compute_tcp(const u_char **pck)
             get_paquet_info()->eth->ipv4->tcp->type = TELNET;
             compute_telnet(pck);
             break;
+        case 25:
+            get_paquet_info()->eth->ipv4->tcp->type = SMTP;
+            compute_smtp(pck, 1);
+            break;
         case 80:
             //TODO: compute_http(pck);
             break;
@@ -56,6 +60,10 @@ void compute_tcp(const u_char **pck)
         case 23:
             get_paquet_info()->eth->ipv4->tcp->type = TELNET;
             compute_telnet(pck);
+            break;
+        case 25:
+            get_paquet_info()->eth->ipv4->tcp->type = SMTP;
+            compute_smtp(pck, 0);
             break;
         case 80:
             //TODO: compute_http(pck);
@@ -126,6 +134,7 @@ void set_printer_tcp(struct tcphdr *tcp)
     tcp_info->ftp = NULL;
     tcp_info->pop = NULL;
     tcp_info->imap = NULL;
+    tcp_info->smtp = NULL;
 
     //On remplit paquet_info
     paquet_info = get_paquet_info();
@@ -164,6 +173,10 @@ void free_tcp_info(struct tcp_info_2 *tcp_info)
     else if (tcp_info->type == IMAP && tcp_info->imap != NULL)
     {
         free_imap_logs(tcp_info->imap);
+    }
+    else if (tcp_info->type == SMTP && tcp_info->smtp != NULL)
+    {
+        free_smtp_logs(tcp_info->smtp);
     }
     free(tcp_info);
 }
