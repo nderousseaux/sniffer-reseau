@@ -9,37 +9,34 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <wchar.h>
 #include <unistd.h>
 
 //On importe les librairies réseaux
 #include <arpa/inet.h>
 #include <netinet/ip.h>
+#include <netinet/ip6.h>
 #include <netinet/ip_icmp.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
 #include <pcap.h>
 #include <netinet/ether.h>
 
-
 //On importe les fichiers
 #include "args.h"
-#include "arp.h"
-#include "bootp.h"
-#include "dhcp.h"
-#include "dns.h"
-#include "ethernet.h"
-#include "ftp.h"
-#include "icmp.h"
-#include "imap.h"
-#include "ipv4.h"
-#include "pop.h"
-#include "printer.h"
-#include "smtp.h"
-#include "sniffer.h"
-#include "tcp.h"
-#include "telnet.h"
-#include "udp.h"
+#include "compute.h"
+#include "logs/log.h"
+#include "logs/logger.h"
+#include "logs/v1.h"
+#include "logs/v2.h"
+#include "logs/v3.h"
+#include "pck.h"
+#include "proto/link.h"
+#include "proto/link/ethernet.h"
+#include "proto/net.h"
+#include "proto/net/arp.h"
+#include "proto/net/ip.h"
+#include "proto/net/ip6.h"
 #include "utils.h"
-#include "http.h"
 
 #endif // INCLUDES_H

@@ -4,6 +4,8 @@
         "args.h": "c",
         "printer.h": "c",
         "utils.h": "c",
-        "includes.h": "c"
+        "includes.h": "c",
+        "inet.h": "c",
+        "log.h": "c"
     }
 }

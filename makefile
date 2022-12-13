@@ -11,8 +11,8 @@ TARGETDIR	:= .
 CFLAGS		:= -Wall -Wextra -Werror -I$(INCDIR)
 
 #Files
-SRCS		:= $(wildcard $(SRCDIR)/*.c)
-OBJS		:= $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
+SRCS		:= $(wildcard $(SRCDIR)/**/**/*.c) $(wildcard $(SRCDIR)/**/*.c) $(wildcard $(SRCDIR)/*.c)
+OBJS		:= $(patsubst %.c, $(OBJDIR)/%.o, $(notdir $(SRCS)))
 INCLUDES	:= $(wildcard $(INCDIR)/*.h)
 
 
@@ -27,6 +27,16 @@ $(TARGETDIR)/$(TARGET): $(OBJS) #On construit l'executable
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c #On construit le reste
 	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/%.o: $(SRCDIR)/**/%.c #On construit le reste (dans les sous-dossiers)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/%.o: $(SRCDIR)/**/**/%.c #On construit le reste (dans les sous-dossiers)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+print:
+	echo $(SRCS)
+	echo $(OBJS)
 
 clean:
 	rm -f $(OBJS)
