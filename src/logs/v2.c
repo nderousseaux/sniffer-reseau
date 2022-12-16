@@ -28,6 +28,10 @@ void logger_print_2(struct logger_info_t * logger_info, struct pck_t *pck)
     //On affche la couche transport
     if(pck->log->tl != NULL && pck->log->tl->log != NULL && strlen(pck->log->tl->log) > 0)
         print_line("Transport layer", pck->log->tl->log, 3);
+    
+    //On affche la couche application
+    if(pck->log->al != NULL && pck->log->al->log != NULL && strlen(pck->log->al->log) > 0)
+        print_line("App layer", pck->log->al->log, 4);
 
     //On affiche une ligne vide
     printf("║");

@@ -42,5 +42,7 @@
 #include "proto/trans/tcp.h"
 #include "proto/trans/udp.h"
 #include "utils.h"
+#include "proto/app.h"
+#include "proto/app/bootp.h"
 
 #endif // INCLUDES_H

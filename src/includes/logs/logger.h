@@ -9,6 +9,7 @@
 #define COLOR_LL 1
 #define COLOR_NL 2
 #define COLOR_TL 3
+#define COLOR_AL 4
 #define COLOR_DATA 9
 
 // Structure contenant les informations globales du logger

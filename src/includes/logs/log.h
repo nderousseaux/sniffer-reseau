@@ -13,8 +13,7 @@ struct log_t {
     struct link_layer_t     *ll;        // Informations liées à la couche lien
     struct net_layer_t      *nl;        // Informations liées à la couche réseau
     struct trans_layer_t    *tl;        // Informations liées à la couche transport
-    // struct app_layer     *al;        // Informations liées à la couche applicative
-    // struct data          *data;      // Informations liées aux données (si naisséssaire)
+    struct app_layer_t      *al;        // Informations liées à la couche applicative
 };
 
 /* Logs détaillés pour le verbose 3 */

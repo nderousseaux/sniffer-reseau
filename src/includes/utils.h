@@ -49,5 +49,7 @@ char *ip6_to_string(struct in6_addr *ip6);
 /* Inverse la position des octets */
 int flip_octets(int x);
 
+/* Convertit des données en str */
+char * str_by_hex(unsigned char * data, int len);
 
 #endif // H_GL_UTILS

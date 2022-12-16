@@ -147,3 +147,14 @@ int flip_octets(int x)
     //On le décale vers la droite de 4 bits
     return (y >> 16) & 0xFFFF;
 }
+
+/* Convertit des données en str */
+char * str_by_hex(unsigned char * data, int len)
+{
+    char * str;
+    CHECK(str = calloc(2048, sizeof(char)));
+    for (int i = 0; i < len; i++) {
+        sprintf(str, "%s%02x ", str, data[i]);
+    }
+    return str;
+}

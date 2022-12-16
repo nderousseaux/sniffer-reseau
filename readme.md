@@ -46,17 +46,16 @@ Ces fonctions vont parcourir la structure pck remplie lors de l'analyse et affic
 | |-ARP                     --> Implémenté
 | |-IPV6                    --> Implémenté
 | |-IPV4                    --> Implémenté
-| | |-UDP                   --> Sur l'autre projet
-| | | |-BOOTP               --> Sur l'autre projet
-| | | | |-DHCP              --> Sur l'autre projet
+| | |-UDP                   --> Implémenté
+| | | |-BOOTP               --> Implémenté
+| | | | |-DHCP              --> Implémenté
 | | | |-DNS                 --> Sur l'autre projet
-| | |-TCP                   --> Sur l'autre projet
+| | |-TCP                   --> Implémenté
 | | | |-telnet              --> Sur l'autre projet
 | | | |-FTP                 --> Sur l'autre projet
 | | | |-POP                 --> Sur l'autre projet
 | | | |-IMAP                --> Sur l'autre projet
 | | | |-SMTP                --> Sur l'autre projet    
 | | | |-HTTP                --> Sur l'autre projet
-| | | |-HTTPS               --> TODO
 | | | |-DNS                 --> TODO
-| | |-ICMP                  --> Sur l'autre projet
+| | |-ICMP                  --> Implémenté
