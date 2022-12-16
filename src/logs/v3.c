@@ -98,6 +98,10 @@ struct log_v3_t * get_log_v3_str(struct pck_t *pck)
     if(pck->log->nl != NULL && pck->log->nl->log != NULL && strlen(pck->log->nl->log) > 0)
         add_layer_log_v3(&log_v3, "Network", pck->log->nl->log_v3, pck->log->nl->log, COLOR_NL);
 
+    // Couche transport
+    if(pck->log->tl != NULL && pck->log->tl->log != NULL && strlen(pck->log->tl->log) > 0)
+        add_layer_log_v3(&log_v3, "Transport", pck->log->tl->log_v3, pck->log->tl->log, COLOR_TL);
+
     return log_v3;
 }
 
@@ -287,6 +291,10 @@ void choose_color(int x, struct pck_t *pck, int * color, int * offset_next)
     else if(pck->log->nl != NULL && x < pck->log->nl->offset) {
         *color = COLOR_NL;
         *offset_next = pck->log->nl->offset;
+    }
+    else if(pck->log->tl != NULL && x < pck->log->tl->offset) {
+        *color = COLOR_TL;
+        *offset_next = pck->log->tl->offset;
     }
     else {
         *color = COLOR_DATA;

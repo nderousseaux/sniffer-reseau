@@ -37,6 +37,10 @@
 #include "proto/net/arp.h"
 #include "proto/net/ip.h"
 #include "proto/net/ip6.h"
+#include "proto/trans.h"
+#include "proto/trans/icmp.h"
+#include "proto/trans/tcp.h"
+#include "proto/trans/udp.h"
 #include "utils.h"
 
 #endif // INCLUDES_H

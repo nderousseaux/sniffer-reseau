@@ -12,7 +12,7 @@ struct log_t {
     char                    *log;       // Informations principale du paquet (niveau de verbosité 1)
     struct link_layer_t     *ll;        // Informations liées à la couche lien
     struct net_layer_t      *nl;        // Informations liées à la couche réseau
-    // struct trans_layer   *tl;        // Informations liées à la couche transport
+    struct trans_layer_t    *tl;        // Informations liées à la couche transport
     // struct app_layer     *al;        // Informations liées à la couche applicative
     // struct data          *data;      // Informations liées aux données (si naisséssaire)
 };

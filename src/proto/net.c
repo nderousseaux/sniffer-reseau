@@ -86,4 +86,5 @@ void free_nl(struct net_layer_t *nl)
     if (nl == NULL) return;
     if (nl->log != NULL) free(nl->log);
     if (nl->log_v3 != NULL) free_log_v3(nl->log_v3);
+    free(nl);
 }
