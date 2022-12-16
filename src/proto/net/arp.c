@@ -56,7 +56,7 @@ void set_arp_log(struct pck_t * pck)
     {
         sprintf(
             log,
-            "Unknown"
+            UNKNOWN
         );
     }
 

@@ -13,9 +13,8 @@ struct log_t *init_log()
     log->log = calloc(2048, sizeof(char));
     log->ll = NULL;
     log->nl = NULL;
-    // log->tl = NULL;
-    // log->al = NULL;
-    // log->data = NULL;
+    log->tl = NULL;
+    log->al = NULL;
     return log;
 }
 
@@ -29,12 +28,8 @@ void free_log(struct log_t *log)
     if(log->log != NULL)    free(log->log);
     if(log->ll != NULL)     free_ll(log->ll);
     if(log->nl != NULL)     free_nl(log->nl);
-    // if(log->tl != NULL)
-    //     free_tl(log->tl);
-    // if(log->al != NULL)
-    //     free_al(log->al);
-    // if(log->data != NULL)
-    //     free_data(log->data);
+    if(log->tl != NULL)     free_tl(log->tl);
+    if(log->al != NULL)     free_al(log->al);
     free(log);
 }
 

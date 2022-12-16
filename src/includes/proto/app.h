@@ -20,6 +20,7 @@ struct app_layer_t {
     int                     offset; // Offset du la fin de la couche application
     char                    *log; // Log de la couche application
     struct bootp_t          *bootp; // Structure bootp
+    struct dns_t            *dns; // Structure dns
     struct log_v3_t         *log_v3;
 };
 

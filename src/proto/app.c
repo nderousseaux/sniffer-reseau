@@ -30,7 +30,7 @@ void compute_app(struct pck_t * pck)
             // compute_imap(pck);
             break;
         case DNS:
-            // compute_dns(pck);
+            compute_dns(pck);
             break;
         case TELNET:
             // compute_telnet(pck);
@@ -101,6 +101,7 @@ struct app_layer_t *init_al()
     al->offset = 0;
     CHECK(al->log = calloc(1024, sizeof(char)));
     al->bootp = NULL;
+    al->dns = NULL;
     al->log_v3 = NULL;
     return al;
 }
@@ -111,6 +112,7 @@ void free_al(struct app_layer_t * al)
     if (al == NULL) return;
     if (al->log != NULL) free(al->log);
     if (al->bootp != NULL) free_bootp(al->bootp);
+    if (al->dns != NULL) free_dns(al->dns);
     if (al->log_v3 != NULL) free_log_v3(al->log_v3);
     free(al);
 }

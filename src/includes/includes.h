@@ -31,6 +31,9 @@
 #include "logs/v2.h"
 #include "logs/v3.h"
 #include "pck.h"
+#include "proto/app.h"
+#include "proto/app/bootp.h"
+#include "proto/app/dns.h"
 #include "proto/link.h"
 #include "proto/link/ethernet.h"
 #include "proto/net.h"
@@ -42,7 +45,5 @@
 #include "proto/trans/tcp.h"
 #include "proto/trans/udp.h"
 #include "utils.h"
-#include "proto/app.h"
-#include "proto/app/bootp.h"
 
 #endif // INCLUDES_H

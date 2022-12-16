@@ -5,7 +5,7 @@
 /* Analyse du paquet bootp */
 void compute_bootp(struct pck_t * pck)
 {
-    //On vérifie que le paquet est bien un paquet bootp
+    //On remplit la structure bootp
     fill_bootp(pck);
 
     //On met à jour le log de la couche bootp
@@ -29,7 +29,6 @@ void fill_bootp(struct pck_t * pck)
         struct bootp_option_t ** options = pck->log->al->bootp->options;
         while(*pck->data != 0xff)
         {
-            printf("%x\n", *pck->data);
             int option = *pck->data;
             shift_pck(pck, 1);
             CHECK(options[option] = malloc(sizeof(struct bootp_option_t)));
