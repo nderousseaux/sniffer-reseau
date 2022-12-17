@@ -52,4 +52,7 @@ int flip_octets(int x);
 /* Convertit des données en str */
 char * str_by_hex(unsigned char * data, int len);
 
+/* Convertit une chaine en chaine imprimable (\r\n\t ) */
+void printable_str(char * str);
+
 #endif // H_GL_UTILS

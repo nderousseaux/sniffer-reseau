@@ -51,7 +51,7 @@ char * logger_title(struct pck_t *pck, struct logger_info_t * logger_info)
 char * logger_proto_title(char * name, char * data, int color)
 {
     char * line;
-    CHECK(line = calloc(SIZE_TERM, sizeof(char)));
+    CHECK(line = calloc(1024, sizeof(char)));
 
     //On affiche le nom de la couche en couleur et les données
     sprintf(

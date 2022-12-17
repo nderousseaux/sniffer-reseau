@@ -99,8 +99,8 @@ void fill_tcp_log_v3(struct pck_t * pck)
     //On met à jour les logs
     sprintf(src_port, "Source port: %d", ntohs(tcp->source));
     sprintf(dst_port, "Destination port: %d", ntohs(tcp->dest));
-    sprintf(seq, "Sequence number: %d (0x%08x)", tcp->seq, tcp->seq);
-    sprintf(ack, "Acknowledgment number: %d (0x%08x)", tcp->ack_seq, tcp->ack_seq);
+    sprintf(seq, "Sequence number: %d (0x%08x)", ntohl(tcp->seq), ntohl(tcp->seq));
+    sprintf(ack, "Acknowledgment number: %d (0x%08x)", ntohl(tcp->ack_seq), ntohl(tcp->ack_seq));
 
     sprintf(flags, "Flags: [");
     if (tcp->syn)

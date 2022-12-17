@@ -158,3 +158,25 @@ char * str_by_hex(unsigned char * data, int len)
     }
     return str;
 }
+
+/* Convertit une chaine en chaine imprimable (\r\n\t ) */
+void printable_str(char * str)
+{
+    char * new_str;
+    CHECK(new_str = calloc(strlen(str), 2));
+    for(unsigned int i = 0; i < strlen(str); i++)
+    {
+        if(str[i] == '\n')
+            sprintf(new_str+strlen(new_str), "\\n");
+        else if (str[i] == '\r')
+            sprintf(new_str+strlen(new_str), "\\r");
+        else if (str[i] == '\t')
+            sprintf(new_str+strlen(new_str), "\\t");
+        else if (str[i] == '\003')
+            sprintf(new_str+strlen(new_str), "\\003");
+        else
+            sprintf(new_str+strlen(new_str), "%c", str[i]);
+    }
+    strcpy(str, new_str);
+    free(new_str);
+}

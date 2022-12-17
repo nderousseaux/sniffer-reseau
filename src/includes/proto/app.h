@@ -21,6 +21,7 @@ struct app_layer_t {
     char                    *log; // Log de la couche application
     struct bootp_t          *bootp; // Structure bootp
     struct dns_t            *dns; // Structure dns
+    struct telnet_t         *telnet; // Structure telnet
     struct log_v3_t         *log_v3;
 };
 

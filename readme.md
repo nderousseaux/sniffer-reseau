@@ -49,13 +49,12 @@ Ces fonctions vont parcourir la structure pck remplie lors de l'analyse et affic
 | | |-UDP                   --> Implémenté
 | | | |-BOOTP               --> Implémenté
 | | | | |-DHCP              --> Implémenté
-| | | |-DNS                 --> Sur l'autre projet
+| | | |-DNS                 --> Implémenté
 | | |-TCP                   --> Implémenté
-| | | |-telnet              --> Sur l'autre projet
+| | | |-telnet              --> Implémenté
 | | | |-FTP                 --> Sur l'autre projet
 | | | |-POP                 --> Sur l'autre projet
 | | | |-IMAP                --> Sur l'autre projet
 | | | |-SMTP                --> Sur l'autre projet    
 | | | |-HTTP                --> Sur l'autre projet
-| | | |-DNS                 --> TODO
 | | |-ICMP                  --> Implémenté
