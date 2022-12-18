@@ -6,7 +6,8 @@
 
 enum app_type {
     HTTP,
-    FTP,
+    FTP_REQ,
+    FTP_RES,
     SMTP,
     POP3,
     IMAP,
@@ -22,6 +23,7 @@ struct app_layer_t {
     struct bootp_t          *bootp; // Structure bootp
     struct dns_t            *dns; // Structure dns
     struct telnet_t         *telnet; // Structure telnet
+    struct ftp_t            *ftp; // Structure ftp
     struct log_v3_t         *log_v3;
 };
 

@@ -30,6 +30,12 @@ int shift_pck(struct pck_t *pck, int i)
     return i;
 }
 
+/* Donne le nombre de bits restant avant la fin du paquet */
+int get_remaining_bits(struct pck_t *pck)
+{
+    return (pck->meta->len - pck->nb_incr) * 8;
+}
+
 /* Libère la structure pck */
 void free_pck(struct pck_t *pck)
 {

@@ -18,6 +18,9 @@ struct pck_t *init_pck(const u_char *pck, struct pcap_pkthdr *meta);
 /* Déplace le pointeur de i octets, sur la structure pck. Renvoie le nombre d'octets décalés */
 int shift_pck(struct pck_t *pck, int i);
 
+/* Donne le nombre de bits restant avant la fin du paquet */
+int get_remaining_bits(struct pck_t *pck);
+
 /* Libère la structure pck */
 void free_pck(struct pck_t *pck);
 

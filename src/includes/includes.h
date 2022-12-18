@@ -34,6 +34,7 @@
 #include "proto/app.h"
 #include "proto/app/bootp.h"
 #include "proto/app/dns.h"
+#include "proto/app/ftp.h"
 #include "proto/app/telnet.h"
 #include "proto/link.h"
 #include "proto/link/ethernet.h"

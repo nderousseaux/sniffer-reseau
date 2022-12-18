@@ -88,7 +88,7 @@ struct log_v3_t * get_log_v3_line(struct pck_t *pck)
 struct log_v3_t * get_log_v3_str(struct pck_t *pck)
 {
     struct log_v3_t * log_v3 = NULL;
-
+    
     // Pour chaque couche, on enregistre l'entête, les données, et le footer
     // Couche liaison
     if(pck->log->ll != NULL && pck->log->ll->log != NULL && strlen(pck->log->ll->log) > 0)

@@ -17,8 +17,11 @@ void compute_app(struct pck_t * pck)
         case HTTP:
             // compute_http(pck);
             break;
-        case FTP:
-            // compute_ftp(pck);
+        case FTP_REQ:
+            compute_ftp(pck, 1);
+            break;
+        case FTP_RES:
+            compute_ftp(pck, 0);
             break;
         case SMTP:
             // compute_smtp(pck);
@@ -74,8 +77,10 @@ void determine_app_type(struct pck_t * pck)
         // On détermine le type d'application
         if (src_port == 80 || dst_port == 80)
             pck->log->al->type = HTTP;
-        else if (src_port == 21 || dst_port == 21)
-            pck->log->al->type = FTP;
+        else if (src_port == 21)
+            pck->log->al->type = FTP_REQ;
+        else if (dst_port == 21)
+            pck->log->al->type = FTP_RES;
         else if (src_port == 25 || dst_port == 25)
             pck->log->al->type = SMTP;
         else if (src_port == 110 || dst_port == 110)
@@ -107,6 +112,7 @@ struct app_layer_t *init_al()
     al->bootp = NULL;
     al->dns = NULL;
     al->telnet = NULL;
+    al->ftp = NULL;
     al->log_v3 = NULL;
     return al;
 }
@@ -119,6 +125,7 @@ void free_al(struct app_layer_t * al)
     if (al->bootp != NULL) free_bootp(al->bootp);
     if (al->dns != NULL) free_dns(al->dns);
     if (al->telnet != NULL) free_telnet(al->telnet);
+    if (al->ftp != NULL) free_ftp(al->ftp);
     if (al->log_v3 != NULL) free_log_v3(al->log_v3);
     free(al);
 }
