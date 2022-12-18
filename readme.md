@@ -52,9 +52,9 @@ Ces fonctions vont parcourir la structure pck remplie lors de l'analyse et affic
 | | | |-DNS                 --> Implémenté
 | | |-TCP                   --> Implémenté
 | | | |-telnet              --> Implémenté
-| | | |-FTP                 --> Sur l'autre projet
-| | | |-POP                 --> Sur l'autre projet
-| | | |-IMAP                --> Sur l'autre projet
-| | | |-SMTP                --> Sur l'autre projet    
-| | | |-HTTP                --> Sur l'autre projet
+| | | |-FTP                 --> Implémenté
+| | | |-POP                 --> Dans le dossier Draft
+| | | |-IMAP                --> Dans le dossier Draft
+| | | |-SMTP                --> Dans le dossier Draft
+| | | |-HTTP                --> Dans le dossier Draft
 | | |-ICMP                  --> Implémenté
